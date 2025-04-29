@@ -25,6 +25,12 @@ import com.iie.st10320489.marene.data.entities.Transaction
 import kotlinx.coroutines.launch
 import com.bumptech.glide.Glide
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.widget.DatePicker
+import java.util.*
+
+
 class AddFragment : Fragment() {
 
     private var userId: Int = 0
@@ -109,6 +115,45 @@ class AddFragment : Fragment() {
             }
         }
 
+        binding.btnPickDate.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+            // Show the DatePickerDialog
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                    binding.transDate.setText(selectedDate) // Set the selected date to transDate EditText
+                },
+                year, month, dayOfMonth
+            )
+            datePickerDialog.show()
+        }
+
+        // Time Picker button click listener
+        binding.btnPickTime.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val hour = calendar.get(Calendar.HOUR_OF_DAY)
+            val minute = calendar.get(Calendar.MINUTE)
+
+            // Show the TimePickerDialog
+            val timePickerDialog = TimePickerDialog(
+                requireContext(),
+                { _, selectedHour, selectedMinute ->
+                    val selectedTime = "$selectedHour:${selectedMinute.toString().padStart(2, '0')}"
+                    // Append the selected time to the selected date
+                    val currentDateTime = binding.transDate.text.toString()
+                    binding.transDate.setText("$currentDateTime $selectedTime") // Set both date and time
+                },
+                hour, minute, true
+            )
+            timePickerDialog.show()
+        }
+
+
         binding.btnChooseFile.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
@@ -148,6 +193,12 @@ class AddFragment : Fragment() {
                     println("Transaction saved: ${transaction.toString()}")
 
                     Toast.makeText(requireContext(), "Transaction saved successfully", Toast.LENGTH_SHORT).show()
+
+
+                    // Reset the fields after saving
+                    resetFields()
+
+
                 }
             } else {
                 Toast.makeText(requireContext(), "Please select a category first!", Toast.LENGTH_SHORT).show()
@@ -201,6 +252,21 @@ class AddFragment : Fragment() {
         }
         return filePath
     }
+
+
+    private fun resetFields() {
+        // Reset all the fields to empty
+        binding.transName.text.clear()
+        binding.transAmount.text.clear()
+        binding.transMethod.text.clear()
+        binding.transLocation.text.clear()
+        binding.transDate.text.clear()
+        binding.transDescription.text.clear()
+        binding.rbExpense.isChecked = true  // Reset the radio button to Expense
+        binding.imageView.setImageDrawable(null)  // Clear the selected image
+        binding.tvFileName.text = ""  // Clear the file name text
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
