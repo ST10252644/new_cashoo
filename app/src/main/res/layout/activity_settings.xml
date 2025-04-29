@@ -73,42 +73,59 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
+        <Button
+            android:id="@+id/btnEditProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:text="Edit Profile"
+            android:textAllCaps="false"
             android:textColor="#333333"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:gravity="start"/>
 
-        <TextView
+        <Button
+            android:id="@+id/btnPrivacy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:text="Privacy &amp; Security"
+            android:text="Privacy and Security"
+            android:textAllCaps="false"
             android:textColor="#333333"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:gravity="start"/>
 
-        <TextView
+        <Button
+            android:id="@+id/btnHelp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:text="Help"
+            android:textAllCaps="false"
             android:textColor="#333333"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:gravity="start"/>
 
-        <TextView
+        <Button
+            android:id="@+id/btnLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:paddingTop="17dp"
             android:paddingBottom="19dp"
             android:text="Logout"
+            android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:gravity="start"/>
     </LinearLayout>
+
 
     <!-- Bottom Navigation View -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
