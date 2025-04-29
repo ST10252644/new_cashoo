@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         // Change status bar color
         window.statusBarColor = ContextCompat.getColor(this, R.color.primary)
 
-        // Make it transparent (Optional)
+        // Make it transparent
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = android.graphics.Color.TRANSPARENT

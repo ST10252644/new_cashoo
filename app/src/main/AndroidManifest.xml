@@ -33,6 +33,7 @@
         <activity android:name=".ui.onboarding.SavingsGoalActivity" />
         <activity android:name=".ui.onboarding.ChinchillaActivity" />
         <activity android:name=".ui.onboarding.ChinchillaHatActivity" />
+        <activity android:name=".ui.settings.ActivitySettings"></activity>
 
         <!--USERS REGISTER-->
         <activity android:name=".SignupActivity" />
