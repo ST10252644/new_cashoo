@@ -24,10 +24,12 @@ import com.iie.st10320489.marene.databinding.FragmentAddBinding
 import com.iie.st10320489.marene.data.entities.Transaction
 import kotlinx.coroutines.launch
 import com.bumptech.glide.Glide
+
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.DatePicker
 import java.util.*
+
 
 class AddFragment : Fragment() {
 
@@ -151,6 +153,7 @@ class AddFragment : Fragment() {
             timePickerDialog.show()
         }
 
+
         binding.btnChooseFile.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
@@ -191,8 +194,11 @@ class AddFragment : Fragment() {
 
                     Toast.makeText(requireContext(), "Transaction saved successfully", Toast.LENGTH_SHORT).show()
 
+
                     // Reset the fields after saving
                     resetFields()
+
+
                 }
             } else {
                 Toast.makeText(requireContext(), "Please select a category first!", Toast.LENGTH_SHORT).show()
@@ -247,6 +253,7 @@ class AddFragment : Fragment() {
         return filePath
     }
 
+
     private fun resetFields() {
         // Reset all the fields to empty
         binding.transName.text.clear()
@@ -259,6 +266,7 @@ class AddFragment : Fragment() {
         binding.imageView.setImageDrawable(null)  // Clear the selected image
         binding.tvFileName.text = ""  // Clear the file name text
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
