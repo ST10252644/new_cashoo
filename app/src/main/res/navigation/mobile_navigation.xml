@@ -36,13 +36,18 @@
         tools:layout="@layout/fragment_category">
 
         <action
-            android:id="@+id/action_categoryFragment_to_transactionFragment"
-            app:destination="@id/transactionFragment" />
+            android:id="@+id/action_categoryFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
 
         <action
             android:id="@+id/action_categoryFragment_to_subcategoryFragment"
             app:destination="@id/subcategoryFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.iie.st10320489.marene.ui.filter.FilterFragment"
+        android:label="FilterFragment" />
 
     <fragment
         android:id="@+id/navigation_rewards"

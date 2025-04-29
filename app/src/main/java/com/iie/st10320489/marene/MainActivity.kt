@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
 
         val navController: NavController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        val navigateToHome = intent.getBooleanExtra("navigateToHome", false)
-        if (navigateToHome) {
+        val shouldNavigateToHome = intent.getBooleanExtra("navigateToHome", false)
+        if (shouldNavigateToHome) {
             navController.navigate(R.id.navigation_home)
         }
 
@@ -85,6 +85,12 @@ class MainActivity : AppCompatActivity() {
                     topNav.visibility = View.VISIBLE
                     backButton.visibility = View.VISIBLE // Show back button
                     title.text = arguments?.getString("categoryName") ?: "Transactions"
+                    rightButton.visibility = View.GONE
+                }
+                R.id.filterFragment -> {
+                    topNav.visibility = View.VISIBLE
+                    backButton.visibility = View.VISIBLE
+                    title.text = arguments?.getString("categoryName") ?: "Filter"
                     rightButton.visibility = View.GONE
                 }
 

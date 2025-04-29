@@ -44,5 +44,9 @@ interface UserDao {
     //delete all from table
     @Query("DELETE FROM User")
     fun deleteAllTableName()
+
+    @Query("SELECT name FROM User WHERE email = :email LIMIT 1")
+    suspend fun getUserNameByEmail(email: String): String?
+
 }
 

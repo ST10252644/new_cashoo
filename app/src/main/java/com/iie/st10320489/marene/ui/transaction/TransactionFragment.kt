@@ -1,6 +1,5 @@
 package com.iie.st10320489.marene.ui.transaction
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iie.st10320489.marene.databinding.FragmentTransactionBinding
 import com.iie.st10320489.marene.data.database.AppDatabase
+import com.iie.st10320489.marene.databinding.FragmentTransactionBinding
 import com.iie.st10320489.marene.data.database.DatabaseInstance
 import kotlinx.coroutines.launch
 
@@ -19,16 +18,12 @@ class TransactionFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: TransactionAdapter
-    private lateinit var db: AppDatabase
-
     private var userId: Int = 0
-    private var categoryName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            userId = it.getInt("userId")
-            categoryName = it.getString("categoryName")
+            userId = it.getInt("userId") // Fetch the userId passed as an argument
         }
     }
 
@@ -43,8 +38,9 @@ class TransactionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        db = DatabaseInstance.getDatabase(requireContext())
+        val db = DatabaseInstance.getDatabase(requireContext())
 
+        // Set up the adapter for the recycler view
         adapter = TransactionAdapter(emptyList()) { transaction ->
             // Handle item click if needed
         }
@@ -52,18 +48,14 @@ class TransactionFragment : Fragment() {
         binding.recyclerViewTransactions.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewTransactions.adapter = adapter
 
-        loadTransactions()
+        loadTransactions(db)  // Load all transactions for the user
     }
 
-    private fun loadTransactions() {
+    private fun loadTransactions(db: AppDatabase) {
         lifecycleScope.launch {
-            val transactions = if (categoryName.isNullOrEmpty()) {
-                db.transactionDao().getTransactionsByUserId(userId)
-            } else {
-                db.transactionDao().getTransactionsByUserIdAndCategoryName(userId, categoryName!!)
-            }
-
-            adapter.updateTransactions(transactions)
+            // Get all transactions by userId without filtering by category
+            val transactions = db.transactionDao().getTransactionsByUserId(userId)
+            adapter.updateTransactions(transactions)  // Update the adapter with the transactions
         }
     }
 

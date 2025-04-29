@@ -92,9 +92,11 @@ class ChinchillaHatActivity : AppCompatActivity() {
                         withContext(Dispatchers.Main) {
                             val intent = Intent(this@ChinchillaHatActivity, MainActivity::class.java)
                             intent.putExtra("navigateToHome", true)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
-                            finish() // optional, if you don't want the user to go back
+                            finish()
                         }
+
                     }
                 }
             }

@@ -30,24 +30,31 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        // Greeting
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+/*        // Greeting
         val userName = activity?.intent?.getStringExtra("USER_NAME")
-        binding.greetingTextView.text = "Hi, $userName"
+        binding.greetingTextView.text = "Hi, $userName"*/
 
-        // Load userId from SharedPreferences
         val sharedPref = requireContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val currentUserEmail = sharedPref.getString("currentUserEmail", null)
 
         if (currentUserEmail != null) {
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 val database = DatabaseInstance.getDatabase(requireContext())
                 userId = database.userDao().getUserIdByEmail(currentUserEmail) ?: 0
 
-                if (userId != 0) {
-                    // Ensure binding is not null before proceeding
+                val userName = database.userDao().getUserNameByEmail(currentUserEmail)
+                binding.greetingTextView.text = "Hi, ${userName ?: "User"}"
+
+
+                if (userId != 0 && isAdded && _binding != null) {
                     setupButton()
                     loadUserSettings()
                     setupRecyclerView()
@@ -55,21 +62,16 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
-        return binding.root
     }
 
     private fun setupButton() {
-        // Ensure that binding is properly initialized before calling this method
-        if (_binding != null) {
-            binding.seeMoreTransactions.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putInt("userId", userId)
-                }
-                findNavController().navigate(
-                    R.id.action_homeFragment_to_transactionFragment, bundle
-                )
+        binding.seeMoreTransactions.setOnClickListener {
+            val bundle = Bundle().apply {
+                putInt("userId", userId)
             }
+            findNavController().navigate(
+                R.id.action_homeFragment_to_transactionFragment, bundle
+            )
         }
     }
 
@@ -77,18 +79,24 @@ class HomeFragment : Fragment() {
         val dao = DatabaseInstance.getDatabase(requireContext()).userSettingsDao()
         val settings = dao.getUserSettingsByUserId(userId)
 
-        settings?.let {
-            binding.root.findViewById<TextView>(R.id.minGoalTextView)?.text = "R ${"%,.0f".format(it.minGoal)}"
-            binding.root.findViewById<TextView>(R.id.maxGoalTextView)?.text = "R ${"%,.0f".format(it.maxGoal)}"
+        if (isAdded && _binding != null) {
+            settings?.let {
+                binding.minGoalTextView.text = "R ${"%,.0f".format(it.minGoal)}"
+                binding.maxGoalTextView.text = "R ${"%,.0f".format(it.maxGoal)}"
 
-            val chinchillaResId = resources.getIdentifier(it.chinchilla, "drawable", requireContext().packageName)
-            binding.root.findViewById<ImageView>(R.id.profileImageView)?.setImageResource(chinchillaResId)
-            binding.root.findViewById<ImageView>(R.id.greenCardImageView)?.setImageResource(chinchillaResId)
+                val chinchillaResId = resources.getIdentifier(it.chinchilla, "drawable", requireContext().packageName)
+                binding.profileImageView.setImageResource(chinchillaResId)
+                binding.greenCardImageView.setImageResource(chinchillaResId)
+            }
         }
     }
 
     private fun setupRecyclerView() {
-        adapter = TransactionAdapter(emptyList()) { /* Handle click if needed */ }
+        adapter = TransactionAdapter(emptyList()) { transactionWithCategory ->
+            // Optional: handle click on transaction item
+            // For now, do nothing
+        }
+
         binding.recyclerRecentTransactions.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerRecentTransactions.adapter = adapter
     }
@@ -97,12 +105,14 @@ class HomeFragment : Fragment() {
         val db = DatabaseInstance.getDatabase(requireContext())
         transactionDao = db.transactionDao()
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             val topTransactions = transactionDao.getTop5RecentTransactionsByUserId(userId)
-            adapter = TransactionAdapter(topTransactions) {
-                // Optional click handler
+            if (isAdded && _binding != null) {
+                adapter = TransactionAdapter(topTransactions) { transactionWithCategory ->
+                    // Optional: navigate or show details
+                }
+                binding.recyclerRecentTransactions.adapter = adapter
             }
-            binding.recyclerRecentTransactions.adapter = adapter
         }
     }
 
@@ -111,4 +121,3 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 }
-

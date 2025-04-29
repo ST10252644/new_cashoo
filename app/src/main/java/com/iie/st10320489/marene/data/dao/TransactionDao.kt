@@ -52,6 +52,7 @@ interface TransactionDao {
 """)
     suspend fun getTransactionsByUserIdAndCategoryName(userId: Int, categoryName: String): List<TransactionWithCategory>
 
+
 }
 
 
