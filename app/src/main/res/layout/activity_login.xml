@@ -152,19 +152,7 @@
                 android:orientation="horizontal">
 
                 <!-- Register Link -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="62dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:paddingBottom="32dp"
-                    android:text="Not a member?"
-                    android:textColor="@color/text"
-                    android:textSize="16sp" />
 
-
-                <!-- Register Now -->
                 <TextView
                     android:id="@+id/registerNowText"
                     android:layout_width="wrap_content"
@@ -174,20 +162,6 @@
                     android:fontFamily="@font/inter_semibold"
                     android:paddingBottom="32dp"
                     android:text="Register now"
-                    android:textColor="@color/tertiary"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <!-- Deletes Tables -->
-                <TextView
-                    android:id="@+id/deleteTables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:fontFamily="@font/inter_semibold"
-                    android:paddingBottom="32dp"
-                    android:text="Delete now"
                     android:textColor="@color/tertiary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
