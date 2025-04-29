@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.iie.st10320489.marene.LoginActivity
 import com.iie.st10320489.marene.R
@@ -18,6 +19,14 @@ class ActivitySettings : AppCompatActivity() {
         logoutButton.setOnClickListener {
             showLogoutDialog()
         }
+
+        val editProfileButton = findViewById<Button>(R.id.btnEditProfile)
+
+        editProfileButton.setOnClickListener {
+            val intent = Intent(this, ActivityEditProfile::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun showLogoutDialog() {
