@@ -1,3 +1,4 @@
+/*
 package com.iie.st10320489.marene.ui.add
 
 import androidx.lifecycle.LiveData
@@ -10,4 +11,4 @@ class AddViewModel : ViewModel() {
         value = "This is Add Fragment"
     }
     val text: LiveData<String> = _text
-}
+}*/

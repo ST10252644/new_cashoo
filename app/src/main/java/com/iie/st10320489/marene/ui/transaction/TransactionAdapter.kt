@@ -4,17 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.iie.st10320489.marene.databinding.ItemTransactionBinding
 import com.iie.st10320489.marene.R
+import com.iie.st10320489.marene.databinding.ItemTransactionBinding
 import com.iie.st10320489.marene.data.entities.TransactionWithCategory
 
 class TransactionAdapter(
-    private var transactions: List<TransactionWithCategory>, // Make this 'var'
+    private var transactions: List<TransactionWithCategory>,
     private val onItemClick: (TransactionWithCategory) -> Unit
 ) : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
     inner class TransactionViewHolder(private val binding: ItemTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(item: TransactionWithCategory) {
             val transaction = item.transaction
             val category = item.category
@@ -36,22 +37,27 @@ class TransactionAdapter(
         }
 
         private fun setTransactionAmount(transaction: com.iie.st10320489.marene.data.entities.Transaction) {
+            val context = binding.root.context
             if (transaction.expense) {
                 binding.txtTransactionAmount.text = String.format("-R%.2f", transaction.amount)
                 binding.txtTransactionAmount.setTextColor(
-                    ContextCompat.getColor(binding.root.context, R.color.outcome)
+                    ContextCompat.getColor(context, R.color.outcome)
                 )
             } else {
                 binding.txtTransactionAmount.text = String.format("+R%.2f", transaction.amount)
                 binding.txtTransactionAmount.setTextColor(
-                    ContextCompat.getColor(binding.root.context, R.color.income)
+                    ContextCompat.getColor(context, R.color.income)
                 )
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
-        val binding = ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemTransactionBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return TransactionViewHolder(binding)
     }
 

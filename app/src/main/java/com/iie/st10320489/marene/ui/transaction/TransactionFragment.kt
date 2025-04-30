@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.iie.st10320489.marene.R
 import com.iie.st10320489.marene.data.database.AppDatabase
 import com.iie.st10320489.marene.databinding.FragmentTransactionBinding
 import com.iie.st10320489.marene.data.database.DatabaseInstance
@@ -41,9 +43,14 @@ class TransactionFragment : Fragment() {
         val db = DatabaseInstance.getDatabase(requireContext())
 
         // Set up the adapter for the recycler view
-        adapter = TransactionAdapter(emptyList()) { transaction ->
-            // Handle item click if needed
+        adapter = TransactionAdapter(emptyList()) { transactionWithCategory ->
+            val bundle = Bundle().apply {
+                putInt("transactionId", transactionWithCategory.transaction.transactionId)  // Correct reference
+            }
+            findNavController().navigate(R.id.action_transactionFragment_to_transactionDetailsFragment, bundle)
         }
+
+
 
         binding.recyclerViewTransactions.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewTransactions.adapter = adapter

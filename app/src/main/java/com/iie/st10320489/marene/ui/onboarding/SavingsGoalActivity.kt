@@ -24,18 +24,17 @@ class SavingsGoalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_savings_goal)
 
-        // Back button functionality
+
         findViewById<ImageButton>(R.id.backButton).setOnClickListener {
             finish()
         }
 
-        // Set up dropdown spinner
         spinner = findViewById(R.id.paydaySpinner)
         val items = arrayOf("Select your payday", "Weekly", "Bi-weekly", "Monthly")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
         spinner.adapter = adapter
 
-        // Sliders and text updates
+
         salarySlider = findViewById(R.id.salarySlider)
         minSavingsSlider = findViewById(R.id.minSavingsSlider)
         maxSpendingSlider = findViewById(R.id.maxSpendingSlider)
@@ -68,7 +67,7 @@ class SavingsGoalActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        // Next button listener
+
         findViewById<Button>(R.id.nextButton).setOnClickListener {
             saveUserSettings()
         }

@@ -1,3 +1,4 @@
+/*
 package com.iie.st10320489.marene.ui.home
 
 import androidx.lifecycle.LiveData
@@ -10,4 +11,4 @@ class HomeViewModel : ViewModel() {
         value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
-}
+}*/

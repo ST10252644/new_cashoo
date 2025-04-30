@@ -56,7 +56,6 @@ class SubCategoryDialogFragment : DialogFragment() {
                 if (userId != null) {
                     val subCategory = SubCategory(
                         name = subcategoryName,
-                        transactionId = null,
                         userId = userId
                     )
 

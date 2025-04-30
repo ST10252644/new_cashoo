@@ -85,10 +85,10 @@ class ChinchillaHatActivity : AppCompatActivity() {
                         userSettings.chinchilla = chinchillaString
                         db.userSettingsDao().updateUserSettings(userSettings)
 
-                        // Print userSettings details to verify
+
                         println("UserSettings updated: color=${userSettings.color}, chinchilla=${userSettings.chinchilla}")
 
-                        // Now move to HomeFragment (inside MainActivity)
+
                         withContext(Dispatchers.Main) {
                             val intent = Intent(this@ChinchillaHatActivity, MainActivity::class.java)
                             intent.putExtra("navigateToHome", true)

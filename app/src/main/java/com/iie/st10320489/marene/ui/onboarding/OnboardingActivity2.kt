@@ -14,16 +14,16 @@ class OnboardingActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize binding
+
         binding = ActivityOnboarding2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Button click logic
+
         binding.nextButton.setOnClickListener {
-            // Start BudgetSelectionActivity when the button is clicked
+
             val intent = Intent(this, BudgetSelectionActivity::class.java)
             startActivity(intent)
-            finish()  // Close the current activity (OnboardingActivity2)
+            finish()
         }
     }
 }

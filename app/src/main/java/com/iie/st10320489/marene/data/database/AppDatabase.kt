@@ -33,7 +33,7 @@ import com.iie.st10320489.marene.data.entities.UserSettings
         RewardHistory::class,
         ActivityLog::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

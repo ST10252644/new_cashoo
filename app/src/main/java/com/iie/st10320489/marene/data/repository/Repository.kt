@@ -47,7 +47,9 @@ class UserSettingsRepository(private val dao: UserSettingsDao) {
 class TransactionRepository(private val dao: TransactionDao) {
     suspend fun insert(transaction: Transaction) = dao.insertTransaction(transaction)
     fun getAll(): Flow<List<Transaction>> = dao.getAllTransactions()
-    fun getById(id: Int): Flow<Transaction?> = dao.getTransactionById(id)
+    // Correct method to get transaction by both userId and transactionId
+    fun getById(userId: Int, transactionId: Int): Flow<Transaction?> = dao.getTransactionById(userId, transactionId)
+
     suspend fun update(transaction: Transaction) = dao.updateTransaction(transaction)
     suspend fun delete(transaction: Transaction) = dao.deleteTransaction(transaction)
     suspend fun getAllTransactions(): List<TransactionWithCategory> {

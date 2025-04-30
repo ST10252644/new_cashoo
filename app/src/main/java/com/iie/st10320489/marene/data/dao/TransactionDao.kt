@@ -14,12 +14,15 @@ interface TransactionDao {
     @Query("SELECT * FROM `Transaction` WHERE userId = :userId ORDER BY dateTime DESC LIMIT 5")
     suspend fun getTop5RecentTransactionsByUserId(userId: Int): List<TransactionWithCategory>
 
+    @Query("SELECT * FROM `Transaction` WHERE userId = :userId")
+    suspend fun getTransactionsByUser(userId: Int): List<TransactionWithCategory>
 
     @Insert
     suspend fun insert(transaction: Transaction)
 
-    @Query("SELECT * FROM `Transaction` WHERE transactionID = :id")
-    fun getTransactionById(id: Int): Flow<Transaction?>
+    @Query("SELECT * FROM `Transaction` WHERE userId = :userId AND transactionId = :transactionId LIMIT 1")
+    fun getTransactionById(userId: Int, transactionId: Int): Flow<Transaction?>
+
 
     @Query("SELECT * FROM `Transaction`")
     fun getAllTransactions(): Flow<List<Transaction>>
@@ -44,6 +47,9 @@ interface TransactionDao {
     @Query("SELECT * FROM `Transaction` WHERE userId = :userId AND categoryId = :categoryId")
     fun getTransactionsByUserAndCategory(userId: Int, categoryId: Int): LiveData<List<Transaction>>
 
+    @Query("SELECT * FROM `Transaction` WHERE transactionId = :id")
+    suspend fun getTransactionWithCategoryById(id: Int): TransactionWithCategory?
+
     @Query("""
     SELECT `Transaction`.* FROM `Transaction`
     INNER JOIN Category ON `Transaction`.categoryId = Category.categoryID
@@ -52,9 +58,34 @@ interface TransactionDao {
 """)
     suspend fun getTransactionsByUserIdAndCategoryName(userId: Int, categoryName: String): List<TransactionWithCategory>
 
-    @Query("SELECT * FROM `Transaction` ORDER BY dateTime DESC")
-    fun getAllTransactionsWithCategoryFlow(): Flow<List<TransactionWithCategory>>
+    @Query("""
+    SELECT * FROM `Transaction`
+    INNER JOIN SubCategory ON `Transaction`.subCategoryId = SubCategory.subCategoryId
+    WHERE `Transaction`.userId = :userId AND SubCategory.name = :subCategoryName
+""")
+    suspend fun getTransactionsByUserIdAndSubCategoryName(userId: Int, subCategoryName: String): List<TransactionWithCategory>
+
+
+    @Query("""
+    SELECT * FROM `Transaction` 
+    WHERE userId = :userId 
+      AND strftime('%m', dateTime) = :month 
+      AND strftime('%Y', dateTime) = :year 
+      AND expense = 0
+""")
+    suspend fun getMonthlyIncome(userId: Int, month: String, year: String): List<Transaction>
+
+    @Query("""
+    SELECT * FROM `Transaction` 
+    WHERE userId = :userId 
+      AND strftime('%m', dateTime) = :month 
+      AND strftime('%Y', dateTime) = :year 
+      AND expense = 1
+""")
+    suspend fun getMonthlyExpenses(userId: Int, month: String, year: String): List<Transaction>
+
+    @Query("SELECT * FROM `Transaction` WHERE userId = :userId AND expense = 1")
+    suspend fun getTransactionsWithCategory(userId: Int): List<TransactionWithCategory>
+
 
 }
-
-

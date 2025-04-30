@@ -47,6 +47,5 @@ interface UserDao {
 
     @Query("SELECT name FROM User WHERE email = :email LIMIT 1")
     suspend fun getUserNameByEmail(email: String): String?
-
 }
 

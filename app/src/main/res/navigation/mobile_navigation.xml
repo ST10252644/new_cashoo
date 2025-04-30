@@ -15,13 +15,34 @@
         <action
             android:id="@+id/action_homeFragment_to_transactionFragment"
             app:destination="@id/transactionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.iie.st10320489.marene.ui.profile.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingFragment_to_edit_profile_Fragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.iie.st10320489.marene.ui.profile.EditProfileFragment"
+        android:label="@string/title_editProfile"
+        tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
         android:id="@+id/navigation_analysis"
         android:name="com.iie.st10320489.marene.ui.analysis.AnalysisFragment"
         android:label="@string/title_analysis"
         tools:layout="@layout/fragment_analysis" />
+
+
 
     <fragment
         android:id="@+id/navigation_add"
@@ -47,7 +68,11 @@
     <fragment
         android:id="@+id/filterFragment"
         android:name="com.iie.st10320489.marene.ui.filter.FilterFragment"
-        android:label="FilterFragment" />
+        android:label="FilterFragment" >
+        <action
+            android:id="@+id/action_transactionFragment_to_transactionDetailsFragment"
+            app:destination="@id/transactionDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_rewards"
@@ -58,55 +83,31 @@
     <fragment
         android:id="@+id/transactionFragment"
         android:name="com.iie.st10320489.marene.ui.transaction.TransactionFragment"
-        android:label="Transactions"
-        tools:layout="@layout/fragment_transaction">
-        <argument
-            android:name="categoryName"
-            app:argType="string" />
-        <!-- Add the navigation action here -->
+        android:label="TransactionFragment">
         <action
             android:id="@+id/action_transactionFragment_to_transactionDetailsFragment"
             app:destination="@id/transactionDetailsFragment" />
-
     </fragment>
 
     <fragment
         android:id="@+id/transactionDetailsFragment"
-        android:name="com.iie.st10320489.marene.ui.transaction.TransactionDetailFragment"
-        android:label="Transaction Details"
-        tools:layout="@layout/fragment_transaction_details" />
+        android:name="com.iie.st10320489.marene.ui.transaction.TransactionDetailsFragment"
+        android:label="Transaction Details" />
+
+    <fragment
+        android:id="@+id/monthlySummaryFragment"
+        android:name="com.iie.st10320489.marene.graphs.MonthlySummaryFragment"
+        android:label="Monthly Summary"
+        tools:layout="@layout/fragment_monthly_summary" />
 
     <fragment
         android:id="@+id/subcategoryFragment"
         android:name="com.iie.st10320489.marene.ui.subcategory.SubcategoryFragment"
-        android:label="Subcategories"
-        tools:layout="@layout/fragment_subcategory">
+        android:label="Subcategories" >
+
         <action
-            android:id="@+id/action_subcategoryFragment_to_transactionFragment"
-            app:destination="@id/transactionFragment" />
+            android:id="@+id/action_subcategoryFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/searchTransactionFragment"
-        android:name="com.iie.st10320489.marene.ui.search.SearchTransactionFragment"
-        android:label="Search"
-        tools:layout="@layout/fragment_home_search" />
-
-
-    <!--<fragment
-        android:id="@+id/onboardingFragment"
-        android:name="com.iie.st10320489.marene.ui.onboarding.OnboardingFragment"
-        android:label="Onboarding"
-        tools:layout="@layout/fragment_onboarding">
-        <action
-            android:id="@+id/action_onboardingFragment_to_onboardingFragment2"
-            app:destination="@id/onboardingFragment2" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/onboardingFragment2"
-        android:name="com.iie.st10320489.marene.ui.onboarding.OnboardingFragment2"
-        android:label="Onboarding 2"
-        tools:layout="@layout/fragment_onboarding2"/>-->
 
 </navigation>
