@@ -7,33 +7,6 @@
     android:orientation="vertical"
     android:background="@color/secondary">
 
-    <!-- Header -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_back"
-            android:contentDescription="Back" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:paddingRight="60dp"
-            android:text="Search"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/primary"/>
-    </LinearLayout>
-
     <!-- Search Input -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,128 +15,160 @@
         android:background="@drawable/search_bar_bg"
         android:padding="12dp"
         android:layout_margin="16dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:elevation="4dp"
+        android:clipToPadding="false"
+        android:layout_gravity="center">
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_search"
-            android:layout_marginEnd="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:text="Filter by:"
+            android:textSize="16sp"
+            android:textColor="@color/text"
+            android:layout_marginEnd="12dp"/>
 
-        <EditText
-            android:id="@+id/et_search"
+        <Spinner
+            android:id="@+id/spinner_filter"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:hint="Search"
-            android:background="@null"
-            android:inputType="text"
+            android:background="@drawable/bordered_box"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:textSize="16sp" />
-
-
+            android:spinnerMode="dropdown"
+            android:popupBackground="@android:color/white"/>
     </LinearLayout>
 
-    <!-- Card Container -->
+    <!-- Date & Time Card -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         app:cardCornerRadius="24dp"
         app:cardElevation="6dp"
         app:cardBackgroundColor="@android:color/white">
 
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/filterInputContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:background="@android:color/white">
+            android:visibility="gone">
 
-            <!-- Category Heading -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Category"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:layout_marginBottom="4dp" />
-
+            <!-- Date Input Group -->
             <LinearLayout
+                android:id="@+id/dateInputGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="12dp">
+                android:visibility="gone"
+                android:layout_marginBottom="16dp">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pick Date and Time"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <Button
+                    android:id="@+id/btnPickDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Choose Category"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:paddingBottom="4dp" />
+                    android:text="Pick Date"
+                    android:layout_marginBottom="8dp"/>
 
-                <AutoCompleteTextView
-                    android:id="@+id/spinner_category"
+
+                <EditText
+                    android:id="@+id/transDate"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:padding="12dp"
-                    android:hint="Choose Category"
+                    android:layout_height="wrap_content"
+                    android:hint="Selected date and time"
+                    android:focusable="false"
                     android:inputType="none"
-                    android:importantForAccessibility="yes" />
+                    android:background="@drawable/bordered_box"
+                    android:padding="12dp"/>
             </LinearLayout>
 
-
-
-
-            <!-- Date Heading -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:layout_marginBottom="4dp" />
-
-            <!-- Date Input -->
-            <com.google.android.material.textfield.TextInputLayout
+            <!-- Name Input Group -->
+            <LinearLayout
+                android:id="@+id/nameInputGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="dd/mm/yyyy"
-                app:endIconMode="custom"
-                app:boxBackgroundMode="outline"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp">
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_date"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Enter Name"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <EditText
+                    android:id="@+id/nameInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="date"
-                    android:hint="dd/mm/yyyy"
-                    android:padding="12dp"
-                    android:background="@android:color/transparent" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="Name"
+                    android:background="@drawable/bordered_box"
+                    android:padding="12dp"/>
+            </LinearLayout>
 
-            <!-- Search Button -->
-            <Button
-                android:id="@+id/btn_search"
+            <!-- Amount Input Group -->
+            <LinearLayout
+                android:id="@+id/amountInputGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Search"
-                android:textColor="@android:color/white"
-                android:backgroundTint="#4CAF80"
-                android:background="@drawable/rounded_button"
-                android:paddingVertical="12dp" />
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Enter Amount"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp"/>
+
+                <EditText
+                    android:id="@+id/amountInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Amount"
+                    android:inputType="numberDecimal"
+                    android:background="@drawable/bordered_box"
+                    android:padding="12dp"/>
+            </LinearLayout>
         </LinearLayout>
 
-
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:textColor="@android:color/white"
+        android:background="@drawable/rounded_button"
+        android:paddingVertical="12dp"
+        android:visibility="gone"
+        android:layout_margin="16dp"/>
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/transactionRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/white"
+        android:visibility="visible"/>
 
 </LinearLayout>

@@ -52,6 +52,8 @@ interface TransactionDao {
 """)
     suspend fun getTransactionsByUserIdAndCategoryName(userId: Int, categoryName: String): List<TransactionWithCategory>
 
+    @Query("SELECT * FROM `Transaction` ORDER BY dateTime DESC")
+    fun getAllTransactionsWithCategoryFlow(): Flow<List<TransactionWithCategory>>
 
 }
 
