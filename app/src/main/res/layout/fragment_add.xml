@@ -248,7 +248,6 @@
                     android:textStyle="bold" />
 
                 <!-- Method Input-->
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -262,6 +261,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="3dp"
                         android:text="Pick Date"
                         android:textSize="16sp" />
 
@@ -269,6 +270,8 @@
                     <Button
                         android:id="@+id/btnPickTime"
                         android:layout_width="0dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="5dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Pick Time"

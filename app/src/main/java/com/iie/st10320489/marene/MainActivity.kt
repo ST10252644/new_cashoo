@@ -84,9 +84,21 @@ class MainActivity : AppCompatActivity() {
                 R.id.transactionFragment -> {
                     topNav.visibility = View.VISIBLE
                     backButton.visibility = View.VISIBLE // Show back button
+                    rightButton.visibility = View.VISIBLE // Show search button
                     title.text = arguments?.getString("categoryName") ?: "Transactions"
+                    rightButton.setImageResource(R.drawable.ic_search)
+
+                    rightButton.setOnClickListener {
+                        navController.navigate(R.id.searchTransactionFragment)
+                    }
+                }
+                R.id.searchTransactionFragment -> {
+                    topNav.visibility = View.VISIBLE
+                    backButton.visibility = View.VISIBLE
+                    title.text = "Search Transactions"
                     rightButton.visibility = View.GONE
                 }
+
                 R.id.filterFragment -> {
                     topNav.visibility = View.VISIBLE
                     backButton.visibility = View.VISIBLE
