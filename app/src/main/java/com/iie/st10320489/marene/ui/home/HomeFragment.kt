@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import android.content.Intent
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.iie.st10320489.marene.databinding.FragmentHomeBinding
 import com.iie.st10320489.marene.data.dao.TransactionDao
 import com.iie.st10320489.marene.ui.transaction.TransactionAdapter
 import kotlinx.coroutines.launch
+import com.iie.st10320489.marene.ui.settings.ActivitySettings
 
 class HomeFragment : Fragment() {
 
@@ -41,9 +43,14 @@ class HomeFragment : Fragment() {
 /*        // Greeting
         val userName = activity?.intent?.getStringExtra("USER_NAME")
         binding.greetingTextView.text = "Hi, $userName"*/
+        binding.profileImageView.setOnClickListener {
+            val intent = Intent(requireContext(), ActivitySettings::class.java)
+            startActivity(intent)
+        }
 
         val sharedPref = requireContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val currentUserEmail = sharedPref.getString("currentUserEmail", null)
+
 
         if (currentUserEmail != null) {
             viewLifecycleOwner.lifecycleScope.launch {
