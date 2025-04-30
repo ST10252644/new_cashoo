@@ -18,14 +18,14 @@ class ChinchillaActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chinchilla)
 
-        // Back button functionality
+
         findViewById<ImageButton>(R.id.backButton).setOnClickListener {
             finish()
         }
 
         chinchillaImage = findViewById(R.id.chinchillaImage)
 
-        // Set up color buttons
+
         findViewById<View>(R.id.whiteButton).setOnClickListener {
             selectedColor = "white"
             chinchillaImage.setImageResource(R.drawable.white_nohat)
@@ -51,12 +51,12 @@ class ChinchillaActivity : AppCompatActivity(){
             chinchillaImage.setImageResource(R.drawable.grey_nohat)
         }
 
-        // Next button click (go to hat selection)
+
         findViewById<Button>(R.id.nextButton).setOnClickListener {
             val intent = Intent(this, ChinchillaHatActivity::class.java)
             intent.putExtra("selectedColor", selectedColor)  // Pass color to next activity
             startActivity(intent)
-            finish()  // Close the current activity
+            finish()
         }
     }
 

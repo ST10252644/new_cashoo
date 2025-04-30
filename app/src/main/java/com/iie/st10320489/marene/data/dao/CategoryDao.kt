@@ -36,6 +36,4 @@ interface CategoryDao {
     @Query("SELECT * FROM Category WHERE userId = :userId")
     fun getCategoriesByUser(userId: Int): LiveData<List<Category>>
 
-
-
 }

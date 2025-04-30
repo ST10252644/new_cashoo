@@ -7,6 +7,5 @@ import androidx.room.PrimaryKey
 data class SubCategory(
     @PrimaryKey(autoGenerate = true) val subCategoryId: Int = 0,
     val name: String,
-    val transactionId: Int?,
     val userId: Int
 )

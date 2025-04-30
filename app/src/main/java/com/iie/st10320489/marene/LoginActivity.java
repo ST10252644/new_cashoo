@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.*;
+import android.widget.ImageView;
 
 
 import com.iie.st10320489.marene.data.database.AppDatabase;
@@ -25,12 +26,38 @@ public class LoginActivity extends AppCompatActivity {
         EditText emailEditText = findViewById(R.id.emailEditText);
         EditText passwordEditText = findViewById(R.id.passwordEditText);
         Button loginButton = findViewById(R.id.loginButton);
-        TextView deleteTables = findViewById(R.id.deleteTables);
 
-        deleteTables.setOnClickListener(new View.OnClickListener() {
+        TextView forgotPassword = findViewById(R.id.forgotPassword);
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearAllData();
+                Toast.makeText(LoginActivity.this, "Kindly contact us at info@cashoo.com to reset password", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        ImageView togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility);
+
+        final boolean[] isPasswordVisible = {false};
+
+        togglePasswordVisibility.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isPasswordVisible[0]) {
+                    // Hide password
+                    passwordEditText.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    togglePasswordVisibility.setImageResource(R.drawable.ic_eye_off); // eye closed
+                } else {
+                    // Show password
+                    passwordEditText.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    togglePasswordVisibility.setImageResource(R.drawable.ic_eye); // eye open
+                }
+
+                // Move cursor to end
+                passwordEditText.setSelection(passwordEditText.getText().length());
+
+                // Toggle the state
+                isPasswordVisible[0] = !isPasswordVisible[0];
             }
         });
 

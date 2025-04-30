@@ -24,8 +24,23 @@
             android:paddingBottom="60dp"
             android:weightSum="2">
 
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="50dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_back"
+                android:contentDescription="Back" />
 
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:paddingRight="60dp"
+                android:text="Add Entry"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary"/>
         </LinearLayout>
 
         <!-- Card Container -->
@@ -83,12 +98,8 @@
 
 
                 <!-- Category -->
-
-                <!-- Name Input -->
-
                 <!--spinner-->
                 <TextView
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Choose category"
@@ -218,7 +229,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!-- Method Input -->
+                <!-- Location -->
                 <EditText
                     android:id="@+id/transLocation"
                     android:layout_width="match_parent"
@@ -248,6 +259,7 @@
                     android:textStyle="bold" />
 
                 <!-- Method Input-->
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -261,8 +273,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="3dp"
                         android:text="Pick Date"
                         android:textSize="16sp" />
 
@@ -270,8 +280,6 @@
                     <Button
                         android:id="@+id/btnPickTime"
                         android:layout_width="0dp"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginRight="5dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Pick Time"
@@ -287,7 +295,7 @@
                     android:layout_marginBottom="21dp"
                     android:background="@drawable/bordered_box"
                     android:fontFamily="@font/inter_regular"
-                    android:hint="add date and time"
+                    android:hint="Add date and time"
                     android:paddingLeft="21dp"
                     android:paddingTop="16dp"
                     android:paddingRight="21dp"
@@ -300,7 +308,6 @@
                     android:clickable="true"
                     android:inputType="none"/>
 
-
                 <!-- Description -->
                 <TextView
                     android:layout_width="match_parent"
@@ -311,7 +318,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!-- Method Input -->
+                <!-- Description -->
                 <EditText
                     android:id="@+id/transDescription"
                     android:layout_width="match_parent"

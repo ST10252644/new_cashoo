@@ -15,8 +15,10 @@ import com.iie.st10320489.marene.R
 import com.iie.st10320489.marene.data.database.DatabaseInstance
 import com.iie.st10320489.marene.databinding.FragmentHomeBinding
 import com.iie.st10320489.marene.data.dao.TransactionDao
+import com.iie.st10320489.marene.graphs.MonthlySummaryFragment
 import com.iie.st10320489.marene.ui.transaction.TransactionAdapter
 import kotlinx.coroutines.launch
+
 
 class HomeFragment : Fragment() {
 
@@ -55,10 +57,14 @@ class HomeFragment : Fragment() {
 
 
                 if (userId != 0 && isAdded && _binding != null) {
+                    profileButton()
                     setupButton()
                     loadUserSettings()
                     setupRecyclerView()
                     loadTop5Transactions()
+
+                    // Dynamically add the fragment here
+                    addMonthlySummaryFragment()
                 }
             }
         }
@@ -71,6 +77,17 @@ class HomeFragment : Fragment() {
             }
             findNavController().navigate(
                 R.id.action_homeFragment_to_transactionFragment, bundle
+            )
+        }
+    }
+
+    private fun profileButton() {
+        binding.profileImageView.setOnClickListener {
+            val bundle = Bundle().apply {
+                putInt("userId", userId)
+            }
+            findNavController().navigate(
+                R.id.action_homeFragment_to_settingsFragment, bundle
             )
         }
     }
@@ -114,6 +131,20 @@ class HomeFragment : Fragment() {
                 binding.recyclerRecentTransactions.adapter = adapter
             }
         }
+    }
+
+    private fun addMonthlySummaryFragment() {
+        // Check if the fragment already exists
+        val fragmentManager = childFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        // Create an instance of MonthlySummaryFragment
+        val fragment = MonthlySummaryFragment()
+
+        // Add or replace the fragment in the container
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
+        fragmentTransaction.addToBackStack(null)  // Optionally add the transaction to the back stack
+        fragmentTransaction.commit()
     }
 
     override fun onDestroyView() {

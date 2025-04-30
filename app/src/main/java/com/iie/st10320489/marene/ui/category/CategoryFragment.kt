@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.iie.st10320489.marene.R
 import com.iie.st10320489.marene.databinding.FragmentCategoryBinding
 import com.iie.st10320489.marene.data.database.DatabaseInstance
+import com.iie.st10320489.marene.graphs.MonthlySummaryFragment
 import kotlinx.coroutines.launch
 
 class CategoryFragment : Fragment() {
@@ -64,6 +65,8 @@ class CategoryFragment : Fragment() {
                 userId = database.userDao().getUserIdByEmail(currentUserEmail) ?: 0
                 if (userId != 0) {
                     loadCategoriesForUser(userId)
+                    // Dynamically add the fragment here
+                    addMonthlySummaryFragment()
                 }
             }
         }
@@ -73,6 +76,20 @@ class CategoryFragment : Fragment() {
         viewModel.getCategoriesByUser(userId).observe(viewLifecycleOwner) { categories ->
             adapter.updateCategories(categories ?: emptyList())
         }
+    }
+
+    private fun addMonthlySummaryFragment() {
+        // Check if the fragment already exists
+        val fragmentManager = childFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        // Create an instance of MonthlySummaryFragment
+        val fragment = MonthlySummaryFragment()
+
+        // Add or replace the fragment in the container
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
+        fragmentTransaction.addToBackStack(null)  // Optionally add the transaction to the back stack
+        fragmentTransaction.commit()
     }
 
     override fun onDestroyView() {

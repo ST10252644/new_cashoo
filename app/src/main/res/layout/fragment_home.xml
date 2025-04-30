@@ -72,13 +72,15 @@
                         android:src="@drawable/grey_sailor" />
                 </LinearLayout>
 
-                <include
-                    android:id="@+id/view_bar_graph"
-                    layout="@layout/view_bar_graph"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/fragment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="true"
+                    app:navGraph="@navigation/mobile_navigation"
+                    tools:fragment=".graphs.MonthlySummaryFragment" />
             </LinearLayout>
+
 
 
             <LinearLayout
@@ -115,9 +117,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:paddingBottom="16dp"
-                    android:paddingTop="24dp"
-                    android:visibility="gone"/>
-
+                    android:paddingTop="24dp"/>
             </LinearLayout>
 
 

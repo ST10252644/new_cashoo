@@ -1,3 +1,4 @@
+/*
 package com.iie.st10320489.marene.ui.category;
 
 public class CategoryModel {
@@ -15,3 +16,4 @@ public class CategoryModel {
     public String getCatTitle() { return catTitle; }
     public Integer getCatColor(){return catColor; }
 }
+*/

@@ -29,7 +29,7 @@ class BudgetSelectionActivity : AppCompatActivity() {
         "Entertainment", "Family", "Savings", "Salary"
     )
 
-    // Initialize ViewModel with the custom factory
+
     private val onboardingViewModel: OnboardingViewModel by viewModels {
         OnboardingViewModelFactory(
             categoryDao = DatabaseInstance.getDatabase(application).categoryDao()
@@ -82,7 +82,7 @@ class BudgetSelectionActivity : AppCompatActivity() {
 
         binding.nextButton.setOnClickListener {
             if (selectedCategories.isNotEmpty()) {
-                // Save the selected categories via ViewModel
+
                 saveUserSelectedCategories()
             } else {
                 Toast.makeText(this, "Please select at least one category", Toast.LENGTH_SHORT).show()
@@ -90,7 +90,7 @@ class BudgetSelectionActivity : AppCompatActivity() {
         }
     }
 
-    //email session
+
     private fun getCurrentUserEmail(): String {
         val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
         val email = sharedPreferences.getString("currentUserEmail", "")

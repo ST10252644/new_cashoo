@@ -42,8 +42,9 @@ class SubcategoryFragment : Fragment() {
         adapter = SubcategoryAdapter(mutableListOf()) { selectedSubcategory ->
             val bundle = Bundle().apply {
                 putString("categoryName", selectedSubcategory.name)
+                putString("subCategoryName", selectedSubcategory.name)
             }
-            findNavController().navigate(R.id.action_subcategoryFragment_to_transactionFragment, bundle)
+            findNavController().navigate(R.id.action_subcategoryFragment_to_filterFragment, bundle)
         }
 
         binding.recyclerViewSubcategories.layoutManager = LinearLayoutManager(context)

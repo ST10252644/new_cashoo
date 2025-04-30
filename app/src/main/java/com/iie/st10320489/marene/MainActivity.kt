@@ -17,7 +17,7 @@ import android.util.TypedValue
 import android.widget.ProgressBar
 import com.iie.st10320489.marene.ui.subcategory.SubCategoryDialogFragment
 import com.iie.st10320489.marene.ui.subcategory.SubcategoryFragment
-import com.iie.st10320489.marene.ui.transaction.TransactionModel
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -60,6 +60,18 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home -> {
                     topNav.visibility = View.GONE
                 }
+                R.id.settingsFragment -> {
+                    topNav.visibility = View.VISIBLE
+                    backButton.visibility = View.VISIBLE
+                    title.text = "Settings"
+                    rightButton.visibility = View.GONE
+                }
+                R.id.editProfileFragment -> {
+                    topNav.visibility = View.VISIBLE
+                    backButton.visibility = View.VISIBLE
+                    title.text = "Edit Profile"
+                    rightButton.visibility = View.GONE
+                }
                 R.id.navigation_analysis -> {
                     topNav.visibility = View.VISIBLE
                     backButton.visibility = View.GONE
@@ -84,21 +96,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.transactionFragment -> {
                     topNav.visibility = View.VISIBLE
                     backButton.visibility = View.VISIBLE // Show back button
-                    rightButton.visibility = View.VISIBLE // Show search button
                     title.text = arguments?.getString("categoryName") ?: "Transactions"
-                    rightButton.setImageResource(R.drawable.ic_search)
-
-                    rightButton.setOnClickListener {
-                        navController.navigate(R.id.searchTransactionFragment)
-                    }
-                }
-                R.id.searchTransactionFragment -> {
-                    topNav.visibility = View.VISIBLE
-                    backButton.visibility = View.VISIBLE
-                    title.text = "Search Transactions"
                     rightButton.visibility = View.GONE
                 }
-
                 R.id.filterFragment -> {
                     topNav.visibility = View.VISIBLE
                     backButton.visibility = View.VISIBLE
@@ -127,10 +127,6 @@ class MainActivity : AppCompatActivity() {
                     backButton.visibility = View.VISIBLE
                     rightButton.visibility = View.VISIBLE
                     rightButton.setImageResource(R.drawable.ic_edit) //HERE IS THE EDIT BUTTON
-
-                    // Get the transaction object passed to the fragment
-                    val transaction = arguments?.getParcelable<TransactionModel>("transaction")
-                    title.text = transaction?.transactionCategory ?: "Transaction Details"
                 }
 
                 else -> {

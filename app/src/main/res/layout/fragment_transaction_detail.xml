@@ -2,12 +2,16 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@android:color/white">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:divider="@android:color/transparent"
+        android:showDividers="middle"
+        android:dividerPadding="8dp">
 
         <!-- Name -->
         <TextView
@@ -24,8 +28,6 @@
             android:id="@+id/txtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Transaction Name"
-            android:textStyle="bold"
             android:layout_marginBottom="21dp"
             android:background="@drawable/bordered_box"
             android:fontFamily="@font/inter_regular"
@@ -33,8 +35,9 @@
             android:paddingTop="16dp"
             android:paddingLeft="21dp"
             android:paddingRight="21dp"
+
             android:textColor="@color/text"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <!-- Amount -->
         <TextView
@@ -51,8 +54,7 @@
             android:id="@+id/txtAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Amount"
-            android:layout_marginBottom="21dp"
+            android:text="-R150.00"
             android:background="@drawable/bordered_box"
             android:fontFamily="@font/inter_regular"
             android:paddingBottom="16dp"
@@ -60,39 +62,14 @@
             android:paddingLeft="21dp"
             android:paddingRight="21dp"
             android:textColor="@color/text"
-            android:textSize="18sp" />
-
-        <!-- Date -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date"
-            android:paddingBottom="11dp"
-            android:fontFamily="@font/inter_bold"
-            android:textStyle="bold"
-            android:textColor="@color/text_heading"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/txtDateTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date"
-            android:layout_marginBottom="21dp"
-            android:background="@drawable/bordered_box"
-            android:fontFamily="@font/inter_regular"
-            android:paddingBottom="16dp"
-            android:paddingTop="16dp"
-            android:paddingLeft="21dp"
-            android:paddingRight="21dp"
-            android:textColor="@color/text"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginBottom="21dp"/>
 
         <!-- Transaction Method -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Transaction Method"
+            android:text="Transaction method"
             android:paddingBottom="11dp"
             android:fontFamily="@font/inter_bold"
             android:textStyle="bold"
@@ -103,8 +80,7 @@
             android:id="@+id/txtMethod"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Payment Method"
-            android:layout_marginBottom="21dp"
+            android:text="Card"
             android:background="@drawable/bordered_box"
             android:fontFamily="@font/inter_regular"
             android:paddingBottom="16dp"
@@ -112,11 +88,10 @@
             android:paddingLeft="21dp"
             android:paddingRight="21dp"
             android:textColor="@color/text"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginBottom="21dp"/>
 
-
-
-        <!-- Location-->
+        <!-- Location -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -131,8 +106,7 @@
             android:id="@+id/txtLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location"
-            android:layout_marginBottom="21dp"
+            android:text="Panarottis"
             android:background="@drawable/bordered_box"
             android:fontFamily="@font/inter_regular"
             android:paddingBottom="16dp"
@@ -140,13 +114,14 @@
             android:paddingLeft="21dp"
             android:paddingRight="21dp"
             android:textColor="@color/text"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginBottom="21dp"/>
 
-        <!-- Category-->
+        <!-- Date and Time -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Category"
+            android:text="Date and Time"
             android:paddingBottom="11dp"
             android:fontFamily="@font/inter_bold"
             android:textStyle="bold"
@@ -154,11 +129,10 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/txtCategory"
+            android:id="@+id/txtTransactionDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Category"
-            android:layout_marginBottom="21dp"
+            android:text="18:30 - 12 April"
             android:background="@drawable/bordered_box"
             android:fontFamily="@font/inter_regular"
             android:paddingBottom="16dp"
@@ -166,33 +140,8 @@
             android:paddingLeft="21dp"
             android:paddingRight="21dp"
             android:textColor="@color/text"
-            android:textSize="18sp" />
-
-        <!-- Subcategory-->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Subcategory"
-            android:paddingBottom="11dp"
-            android:fontFamily="@font/inter_bold"
-            android:textStyle="bold"
-            android:textColor="@color/text_heading"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/txtSubCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Subcategory"
-            android:layout_marginBottom="21dp"
-            android:background="@drawable/bordered_box"
-            android:fontFamily="@font/inter_regular"
-            android:paddingBottom="16dp"
-            android:paddingTop="16dp"
-            android:paddingLeft="21dp"
-            android:paddingRight="21dp"
-            android:textColor="@color/text"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginBottom="21dp"/>
 
         <!-- Description -->
         <TextView
@@ -209,8 +158,7 @@
             android:id="@+id/txtDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Description"
-            android:layout_marginBottom="21dp"
+            android:text="Had a pizza, coke and water at Panarottis for Cherika’s Birthday"
             android:background="@drawable/bordered_box"
             android:fontFamily="@font/inter_regular"
             android:paddingBottom="16dp"
@@ -218,14 +166,33 @@
             android:paddingLeft="21dp"
             android:paddingRight="21dp"
             android:textColor="@color/text"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginBottom="21dp"/>
+
+        <!-- Attached Photo -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Attached Photo"
+            android:paddingBottom="11dp"
+            android:fontFamily="@font/inter_bold"
+            android:textStyle="bold"
+            android:textColor="@color/text_heading"
+            android:textSize="16sp" />
 
         <ImageView
-            android:id="@+id/imgTransactionPhoto"
+            android:id="@+id/imgReceipt"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="Transaction Photo"
-            android:src="@drawable/receipt"/>
+            android:layout_height="wrap_content"
+            android:src="@drawable/receipt"
+            android:contentDescription="receipt_image"
+            android:layout_marginBottom="21dp"/>
+
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" />
+
     </LinearLayout>
 </ScrollView>
