@@ -98,4 +98,8 @@ interface TransactionDao {
     suspend fun getMonthlySavings(userId: Int, month: String, year: String): List<Transaction>
 
 
+    @Query("SELECT * FROM `Transaction` ORDER BY dateTime DESC")
+    fun getAllTransactionsWithCategoryFlow(): Flow<List<TransactionWithCategory>>
+
+
 }
