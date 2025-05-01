@@ -6,7 +6,7 @@ Cashoo: A Budget Tracking App
 Welcome to the Cashoo, a budgeting app that gamifies tracking personal budgets, making tracking finances more fun, interactive, and convenient. Cashoo is a budgeting app that provides an integrated solution to logging, categorizing, and analyzing spending patterns, along with setting saving targets, tracking spending, and controlling finances.Its innovative design and gamification aspects make use of digital money and cashews, it fosters app commerce and incorporates real-world rewards schemes like scannable vouchers for well known brands around you. The users get to earn cashews by achieving goals and accumulating points(cashews). Cashoo's simplified mechanics, easy-to-read graphs, and the ability to add custom categories make it an ideal choice for those seeking a novel and exciting budgeting experience.This README outlines the core app flow, navigation, and features implemented during the planning and design phase.
 
 
-—----------------------------------------------------------------------------------------
+—-----------------------------------------------------------------------------------------------------------------------------------------------
 APP Youtube link and Github Link:
 https://github.com/ST10252644/new_cashoo.git
 https://youtu.be/iwUW5Z8RXQE
@@ -25,7 +25,7 @@ Overview of the App Flow
 3. Home Page: Shows total spending, balance, and recent expenses.Users can access their profile, transaction history, and navigation bar from this point.
 
    
-—---------------------------------------------------------------------------------------------------------------------
+—--------------------------------------------------------------------------------------------------------------------------------------------------------
 How to Use the App:
 
 With just a few taps, you can access essential features thanks to the user-friendly and intuitive navigation:
@@ -39,7 +39,7 @@ With just a few taps, you can access essential features thanks to the user-frien
 •	To add a new transaction, tap the "+" icon; Enter information such as the amount, date, time, category, description, and location.
 
 
-—---------------------------------------------------------------------------------------------------------------------
+—----------------------------------------------------------------------------------------------------------------------------------------
 Key Elements
 
 
@@ -51,7 +51,7 @@ Key Elements
 •	Profile management includes updating goals, salary, email, and name.Features for a secure password change and logout
 •	Technical SynopsisAndroid as the platform; Firebase as the backend (for authentication, databases, and cloud syncing); and a responsive user interface that works on all screen sizes
 
----------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------
 References
 
 Android Developers. 2023. Layouts in Views. [online]. Available at: https://developer.android.com/developer/ui/views/layout/declaring-layout [Accessed 23 April 2025].
