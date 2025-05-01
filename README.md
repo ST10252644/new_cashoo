@@ -26,7 +26,7 @@ Overview of the App Flow
 3. Home Page: Shows total spending, balance, and recent expenses.Users can access their profile, transaction history, and navigation bar from this point.
 
    
-—---------------------------------------------------------------------------------------------------------------------------------
+—-------------------------------------------------------------------------------------------------------------------------
 
 How to Use the App:
 
