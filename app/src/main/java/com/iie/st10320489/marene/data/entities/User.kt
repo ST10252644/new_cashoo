@@ -10,6 +10,6 @@ data class User(
     val surname: String,
     val email: String,
     val password: String,
-    val cashoos: Double,
+    var cashoos: Double,
     val isActive: Boolean
 )

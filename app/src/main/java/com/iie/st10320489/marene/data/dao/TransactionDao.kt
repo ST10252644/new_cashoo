@@ -87,5 +87,15 @@ interface TransactionDao {
     @Query("SELECT * FROM `Transaction` WHERE userId = :userId AND expense = 1")
     suspend fun getTransactionsWithCategory(userId: Int): List<TransactionWithCategory>
 
+    @Query("""
+    SELECT t.* FROM `Transaction` t
+    INNER JOIN Category c ON t.categoryId = c.categoryID
+    WHERE t.userId = :userId 
+      AND strftime('%m', t.dateTime) = :month 
+      AND strftime('%Y', t.dateTime) = :year 
+      AND c.name = 'Savings'
+""")
+    suspend fun getMonthlySavings(userId: Int, month: String, year: String): List<Transaction>
+
 
 }

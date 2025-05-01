@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.iie.st10320489.marene.LoginActivity
@@ -30,13 +31,24 @@ class SettingsFragment : Fragment() {
 
         val logoutButton: RelativeLayout = view.findViewById(R.id.btnLogout)
         val editProfileRow: RelativeLayout = view.findViewById(R.id.btnEditProfile)
+        val privacyRow: RelativeLayout = view.findViewById(R.id.btnPrivacy)
+        val  helpRow: RelativeLayout = view.findViewById(R.id.btnHelp)
 
         logoutButton.setOnClickListener {
             showLogoutDialog()
         }
 
         editProfileRow.setOnClickListener {
-            findNavController().navigate(R.id.action_settingFragment_to_edit_profile_Fragment)
+            Toast.makeText(context, "Continue in Part 3", Toast.LENGTH_SHORT).show()
+            //findNavController().navigate(R.id.action_settingFragment_to_edit_profile_Fragment)
+        }
+
+        privacyRow.setOnClickListener {
+            Toast.makeText(context, "Continue in Part 3", Toast.LENGTH_SHORT).show()
+        }
+
+        helpRow.setOnClickListener {
+            Toast.makeText(context, "Continue in Part 3", Toast.LENGTH_SHORT).show()
         }
 
     }

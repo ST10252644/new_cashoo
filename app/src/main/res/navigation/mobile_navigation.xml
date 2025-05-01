@@ -110,4 +110,60 @@
             app:destination="@id/filterFragment" />
     </fragment>
 
+    <!--Rewards Nav-->
+    <!--<fragment
+        android:id="@+id/navigation_rewards_two"
+        android:name="com.iie.st10320489.marene.ui.rewards.FragmentRewardsTwo"
+        tools:layout="@layout/fragment_rewardstwo" />-->
+
+    <fragment
+        android:id="@+id/navigation_rewards_discount"
+        android:name="com.iie.st10320489.marene.ui.rewards.DiscountActivity"
+        tools:layout="@layout/activity_discount" />
+
+
+    <fragment
+        android:id="@+id/navigation_rewards_help"
+        android:name="com.iie.st10320489.marene.ui.profile.HelpActivity"
+        tools:layout="@layout/activity_help" />
+
+
+    <fragment
+        android:id="@+id/navigation_rewards_claimdetail"
+        android:name="com.iie.st10320489.marene.ui.rewards.ClaimDetailActivity"
+        tools:layout="@layout/activity_claim_detail">
+        <argument
+            android:name="IMAGE_RES_ID"
+            app:argType="integer" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_rewards_discountdetail"
+        android:name="com.iie.st10320489.marene.ui.rewards.DiscountDetailActivity"
+        tools:layout="@layout/activity_discount_detail">
+        <argument
+            android:name="discount_image"
+            app:argType="integer" />
+    </fragment>
+
+    <!--<fragment
+        android:id="@+id/navigation_rewards_claimed"
+        android:name="com.iie.st10320489.marene.ui.rewards.FragmentClaimedRewards"
+        tools:layout="@layout/fragment_claimed_rewards" />-->
+
+
+    <fragment
+        android:id="@+id/navigation_rewards_qr"
+        android:name="com.iie.st10320489.marene.ui.rewards.QrFragment"
+        tools:layout="@layout/activity_qr" />
+
+    <fragment
+        android:id="@+id/qrFragment"
+        android:name="com.iie.st10320489.marene.ui.rewards.QrFragment"
+        android:label="QR Code">
+        <!-- Add actions if needed -->
+    </fragment>
+
+
 </navigation>

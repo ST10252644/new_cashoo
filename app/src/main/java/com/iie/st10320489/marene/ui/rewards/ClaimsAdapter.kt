@@ -1,11 +1,13 @@
 package com.iie.st10320489.marene.ui.rewards
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.iie.st10320489.marene.R
 
@@ -18,15 +20,19 @@ RecyclerView.Adapter<ClaimsAdapter.ClaimViewHolder>() {
         val claimPoints: TextView = itemView.findViewById(R.id.ClaimRewardPoints)
 
         init {
-            // Set the click listener to open the ClaimDetailActivity
+            // the click listener opens the ClaimDetailActivity page
             itemView.setOnClickListener {
-                val context = itemView.context
                 val claim = claimList[adapterPosition]
 
-                val intent = Intent(context, ClaimDetailActivity::class.java)
-                // Pass the image resource ID to the new activity
-                intent.putExtra("IMAGE_RES_ID", claim.clmImageResId)
-                context.startActivity(intent)
+                // A bundle value is made to pass the image resource ID to the ClaimDetailActivity fragment
+                val bundle = Bundle().apply {
+                    putInt("IMAGE_RES_ID", claim.clmImageResId)
+                    putString("TITLE", claim.clmTitle)
+                    putString("POINTS", claim.clmPoints)
+                }
+
+                // Find the claim detail page via navigation
+                itemView.findNavController().navigate(R.id.navigation_rewards_claimdetail, bundle)
             }
         }
     }

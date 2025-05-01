@@ -1,20 +1,23 @@
 package com.iie.st10320489.marene.ui.rewards
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.iie.st10320489.marene.R
 
-class DiscountActivity : AppCompatActivity() {
+class DiscountActivity : Fragment() {
 
     private lateinit var chipGroup: ChipGroup
     private lateinit var recyclerViewClothing: RecyclerView
@@ -22,24 +25,24 @@ class DiscountActivity : AppCompatActivity() {
     private lateinit var recyclerViewAccessories: RecyclerView
     private lateinit var recyclerViewShoes: RecyclerView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_discount)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        val rootView: View = inflater.inflate(R.layout.activity_discount, container, false)
+
 
         // Initialize RecyclerViews
-        recyclerViewClothing = findViewById(R.id.recyclerViewClothing)
-        recyclerViewFood = findViewById(R.id.recyclerViewFood)
-        recyclerViewAccessories = findViewById(R.id.recyclerViewAccessories)
-        recyclerViewShoes = findViewById(R.id.recyclerViewShoes)
-        chipGroup = findViewById(R.id.chipGroup)
+        recyclerViewClothing = rootView.findViewById(R.id.recyclerViewClothing)
+        recyclerViewFood = rootView.findViewById(R.id.recyclerViewFood)
+        recyclerViewAccessories = rootView.findViewById(R.id.recyclerViewAccessories)
+        recyclerViewShoes = rootView.findViewById(R.id.recyclerViewShoes)
+        chipGroup = rootView.findViewById(R.id.chipGroup)
 
 
         // Set LayoutManagers
-        recyclerViewClothing.layoutManager = LinearLayoutManager(this)
-        recyclerViewFood.layoutManager = LinearLayoutManager(this)
-        recyclerViewAccessories.layoutManager = LinearLayoutManager(this)
-        recyclerViewShoes.layoutManager = LinearLayoutManager(this)
+        recyclerViewClothing.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewFood.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewAccessories.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewShoes.layoutManager = LinearLayoutManager(requireContext())
 
         // Setup data
         val clothingDiscounts = listOf(
@@ -60,7 +63,11 @@ class DiscountActivity : AppCompatActivity() {
         val shoesDiscounts = listOf(
             Discount("Nike Shoes", "10% off sneakers", R.drawable.jordan4),
             Discount("Shoes Wipers", "Save 60% off on shoe wipers", R.drawable.wipers),
-            Discount("SportScene", "15% of on shoe related items at the shop", R.drawable.sportscene),
+            Discount(
+                "SportScene",
+                "15% of on shoe related items at the shop",
+                R.drawable.sportscene
+            ),
             Discount("Sneakers", "20% off on all sneakers in Sandton Mall", R.drawable.allsneaks)
         )
 
@@ -73,32 +80,37 @@ class DiscountActivity : AppCompatActivity() {
 
 
         // Chip click handling
-        findViewById<Chip>(R.id.chipAll).setOnClickListener { showOnly("all") }
-        findViewById<Chip>(R.id.chipCloths).setOnClickListener { showOnly("clothing") }
-        findViewById<Chip>(R.id.chipFood).setOnClickListener { showOnly("food") }
-        findViewById<Chip>(R.id.chipAccess).setOnClickListener { showOnly("accessories") }
-        findViewById<Chip>(R.id.chipShoes).setOnClickListener { showOnly("shoes") }
+        rootView.findViewById<Chip>(R.id.chipAll).setOnClickListener { showOnly("all") }
+        rootView.findViewById<Chip>(R.id.chipCloths).setOnClickListener { showOnly("clothing") }
+        rootView.findViewById<Chip>(R.id.chipFood).setOnClickListener { showOnly("food") }
+        rootView.findViewById<Chip>(R.id.chipAccess).setOnClickListener { showOnly("accessories") }
+        rootView.findViewById<Chip>(R.id.chipShoes).setOnClickListener { showOnly("shoes") }
 
 
-        val backm2 = findViewById<ImageView>(R.id.back2)
-            backm2.setOnClickListener {
-            val intent = Intent(this, FragmentRewardsTwo::class.java)
-            startActivity(intent)
+        val backm2 = rootView.findViewById<ImageView>(R.id.back2)
+        backm2.setOnClickListener {
+            //findNavController().navigate(R.id.navigation_rewards_two)
         }
 
 
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.disc)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(rootView.findViewById(R.id.disc)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        return rootView
     }
 
     private fun showOnly(category: String) {
-        recyclerViewClothing.visibility = if (category == "clothing" || category == "all") View.VISIBLE else View.GONE
-        recyclerViewFood.visibility = if (category == "food" || category == "all") View.VISIBLE else View.GONE
-        recyclerViewAccessories.visibility = if (category == "accessories" || category == "all") View.VISIBLE else View.GONE
-        recyclerViewShoes.visibility = if (category == "shoes" || category == "all") View.VISIBLE else View.GONE
+        recyclerViewClothing.visibility =
+            if (category == "clothing" || category == "all") View.VISIBLE else View.GONE
+        recyclerViewFood.visibility =
+            if (category == "food" || category == "all") View.VISIBLE else View.GONE
+        recyclerViewAccessories.visibility =
+            if (category == "accessories" || category == "all") View.VISIBLE else View.GONE
+        recyclerViewShoes.visibility =
+            if (category == "shoes" || category == "all") View.VISIBLE else View.GONE
     }
 }
