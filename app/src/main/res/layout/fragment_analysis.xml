@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <!-- Parent ScrollView for scrollable content -->
+    <!--(AndroidDevelopers, 2023), (Kay, 2022), (Coder, 2022), (Coder, 2024)-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Balance and Expense Display -->
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_container"
                 android:layout_width="match_parent"
@@ -30,7 +29,6 @@
                 app:navGraph="@navigation/mobile_navigation"
                 tools:fragment=".graphs.MonthlySummaryFragment" />
 
-            <!-- Bar Graph Layout -->
             <LinearLayout
                 android:id="@+id/bar_graph_section"
                 android:layout_width="match_parent"
@@ -39,21 +37,7 @@
                 android:padding="16dp"
                 android:background="#FFFFFF">
 
-                <!-- Light Grey Rounded Block with Title and Icons -->
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tabLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    app:tabBackground="@drawable/tab_background"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabSelectedTextColor="@android:color/black"
-                    app:tabTextColor="#808080">
-
-                </com.google.android.material.tabs.TabLayout>
-
+                <!-- Title and Icons Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -73,7 +57,6 @@
                         android:textStyle="bold"
                         android:textColor="#000000" />
 
-                    <!-- Icon Buttons -->
                     <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
@@ -90,110 +73,7 @@
                         android:src="@drawable/ic_calendar" />
                 </LinearLayout>
 
-                <!-- Bar Chart -->
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginTop="8dp" />
-            </LinearLayout>
-
-            <!-- Income and Expense Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center">
-
-                <!-- Income -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/income" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Income"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginTop="8dp"/>
-
-                    <!-- Income Amount -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="R4,120.00"
-                        android:textColor="@color/income"
-                        android:textSize="23sp"
-                        android:layout_marginTop="4dp"/>
-                </LinearLayout>
-
-                <!-- Expense -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/outcome" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Expense"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginTop="8dp"/>
-
-                    <!-- Expense Amount -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="R1,187.40"
-                        android:textColor="@color/outcome"
-                        android:textSize="23sp"
-                        android:layout_marginTop="4dp"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Curved Light Grey Block -->
-            <LinearLayout
-                android:id="@+id/curvedCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:background="@drawable/curved_background"
-                android:elevation="4dp">
-
-                <!-- Page Title -->
-                <TextView
-                    android:id="@+id/pageTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Total Category Expense"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/inter_bold"
-                    android:textColor="@color/text_heading"
-                    android:textSize="16sp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="8dp" />
-
-
+                <!--(AndroidDevelopers, 2023), (Kay, 2022), (Coder, 2022), (Coder, 2024)-->
                 <!-- Pie Chart -->
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart"
@@ -201,7 +81,7 @@
                     android:layout_height="300dp"
                     android:layout_marginTop="24dp" />
 
-                <!-- Total Expense inside chart -->
+                <!-- Details Table -->
                 <LinearLayout
                     android:id="@+id/detailsLayout"
                     android:layout_width="match_parent"
@@ -210,7 +90,6 @@
                     android:layout_marginTop="32dp"
                     android:paddingHorizontal="8dp">
 
-                    <!-- Table Headers -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -250,7 +129,123 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- Income and Expense -->
+                <LinearLayout
+                    android:id="@+id/incomeExpenseSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="50dp"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/income" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Income"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginTop="8dp"/>
+
+                        <TextView
+                            android:id="@+id/incomeAmountTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="R4,120.00"
+                            android:textColor="@color/income"
+                            android:textSize="23sp"
+                            android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/outcome" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Expense"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginTop="8dp"/>
+
+                        <TextView
+                            android:id="@+id/expenseAmountTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="R1,187.40"
+                            android:textColor="@color/outcome"
+                            android:textSize="23sp"
+                            android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Total Category Expense Header -->
+                <LinearLayout
+                    android:id="@+id/curvedCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@drawable/rounded_background"
+                    android:elevation="4dp">
+
+                    <TextView
+                        android:id="@+id/pageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Category Expense"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/inter_bold"
+                        android:textColor="@color/text_heading"
+                        android:textSize="16sp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <!--  TabLayout  -->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="12dp"
+                    app:tabBackground="@drawable/tab_background"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabSelectedTextColor="@android:color/black"
+                    app:tabTextColor="#808080" />
+
+                <!-- Bar Chart -->
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="20dp" />
+
+
+
+
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
