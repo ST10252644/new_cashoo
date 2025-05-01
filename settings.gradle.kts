@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "marene"
 include(":app")
+ //(Cal, 2023), (College, 2025)
