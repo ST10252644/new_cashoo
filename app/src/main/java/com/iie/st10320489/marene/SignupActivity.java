@@ -25,29 +25,17 @@ import com.iie.st10320489.marene.ui.onboarding.OnboardingActivity2;
 
 import java.util.List;
 
-<<<<<<< HEAD
 public class SignupActivity extends AppCompatActivity {
     private boolean isPasswordStrong(String password) {
         return password.length() >= 8 &&
                 password.matches(".*[A-Z].*") &&
                 password.matches(".*[0-9].*") &&
                 password.matches(".*[!@#\\$%^&*].*");
-=======
-public class SignupActivity extends AppCompatActivity { // (Android Knowledge, 2024)
-
-    // Method to check if the password meets the complexity requirements
-    private boolean isPasswordStrong(String password) {
-        return password.length() >= 8 &&
-                password.matches(".*[A-Z].*") && // At least one uppercase letter
-                password.matches(".*[0-9].*") && // At least one digit
-                password.matches(".*[!@#\\$%^&*].*"); // At least one special character
->>>>>>> nathan
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
         setContentView(R.layout.activity_signup);
 
         AppDatabase db;
@@ -56,25 +44,12 @@ public class SignupActivity extends AppCompatActivity { // (Android Knowledge, 2
                 .allowMainThreadQueries()
                 .build();
 
-=======
-        setContentView(R.layout.activity_signup); // Set the layout for the signup screen
-
-        // Initialize the Room database
-        AppDatabase db;
-        db = Room.databaseBuilder(getApplicationContext(),
-                        AppDatabase.class, "cashoo_database")
-                .allowMainThreadQueries() // Allow queries on main thread (not recommended for production)
-                .build();
-
-        // Find view references
->>>>>>> nathan
         Button signupButton = findViewById(R.id.signupLoginButton);
         EditText nameEditText = findViewById(R.id.nameEditText);
         EditText surnameEditText = findViewById(R.id.surnameEditText);
         EditText emailEditText = findViewById(R.id.signupEmailEditText);
         EditText passwordEditText = findViewById(R.id.createPasswordEditText);
         EditText confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
-<<<<<<< HEAD
         // View bindings
         ImageView toggleCreatePassword = findViewById(R.id.toggleCreatePassword);
         ImageView toggleConfirmPassword = findViewById(R.id.toggleConfirmPassword);
@@ -84,23 +59,11 @@ public class SignupActivity extends AppCompatActivity { // (Android Knowledge, 2
         final boolean[] isCreatePasswordVisible = {false};
         final boolean[] isConfirmPasswordVisible = {false};
 
-=======
-        ImageView toggleCreatePassword = findViewById(R.id.toggleCreatePassword);
-        ImageView toggleConfirmPassword = findViewById(R.id.toggleConfirmPassword);
-        EditText createPasswordEditText = findViewById(R.id.createPasswordEditText);
-
-        // Flags to keep track of password visibility
-        final boolean[] isCreatePasswordVisible = {false};
-        final boolean[] isConfirmPasswordVisible = {false}; // (Android Knowledge, 2024)
-
-        // Toggle password visibility for "Create Password" field
->>>>>>> nathan
         toggleCreatePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isCreatePasswordVisible[0]) {
                     createPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-<<<<<<< HEAD
                     toggleCreatePassword.setImageResource(R.drawable.ic_eye_off);
                 } else {
                     createPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
@@ -111,25 +74,11 @@ public class SignupActivity extends AppCompatActivity { // (Android Knowledge, 2
             }
         });
 
-=======
-                    toggleCreatePassword.setImageResource(R.drawable.ic_eye_off); // Set eye-off icon
-                } else {
-                    createPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    toggleCreatePassword.setImageResource(R.drawable.ic_eye); // Set eye icon
-                }
-                createPasswordEditText.setSelection(createPasswordEditText.length()); // Keep cursor at end
-                isCreatePasswordVisible[0] = !isCreatePasswordVisible[0]; // Toggle flag
-            }
-        });
-
-        // Toggle password visibility for "Confirm Password" field
->>>>>>> nathan
         toggleConfirmPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isConfirmPasswordVisible[0]) {
                     confirmPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-<<<<<<< HEAD
                     toggleConfirmPassword.setImageResource(R.drawable.ic_eye_off);
                 } else {
                     confirmPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
@@ -143,33 +92,12 @@ public class SignupActivity extends AppCompatActivity { // (Android Knowledge, 2
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-=======
-                    toggleConfirmPassword.setImageResource(R.drawable.ic_eye_off); // Set eye-off icon
-                } else {
-                    confirmPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    toggleConfirmPassword.setImageResource(R.drawable.ic_eye); // Set eye icon
-                }
-                confirmPasswordEditText.setSelection(confirmPasswordEditText.length()); // Keep cursor at end
-                isConfirmPasswordVisible[0] = !isConfirmPasswordVisible[0]; // Toggle flag
-            }
-        }); // (Android Knowledge, 2024)
-
-        // Set click listener for the signup button
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get input values
->>>>>>> nathan
                 String name = nameEditText.getText().toString();
                 String surname = surnameEditText.getText().toString();
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String confirmPassword = confirmPasswordEditText.getText().toString();
 
-<<<<<<< HEAD
-=======
-                // Validate input
->>>>>>> nathan
                 if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(SignupActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -179,57 +107,35 @@ public class SignupActivity extends AppCompatActivity { // (Android Knowledge, 2
                 } else if (!isPasswordStrong(password)) {
                     Toast.makeText(SignupActivity.this, "Password is not complex enough. Use 8+ chars, uppercase, number, and symbol.", Toast.LENGTH_LONG).show();
                 } else {
-<<<<<<< HEAD
 
                     new Thread(() -> {
                         User newUser = new User(0, name, surname, email, password, 0.0, true);
                         db.userDao().insertUserNow(newUser);
 
-=======
-                    // If all validations pass, create user in a new thread
-                    new Thread(() -> {
-                        User newUser = new User(0, name, surname, email, password, 0.0, true);
-                        db.userDao().insertUserNow(newUser); // Insert user into database
-
-                        // Save user email and ID in shared preferences
->>>>>>> nathan
                         SharedPreferences sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("currentUserEmail", newUser.getEmail());
                         editor.putInt("currentUserId", newUser.getUserId());
                         editor.apply();
 
-<<<<<<< HEAD
-=======
-                        // Notify user and navigate to onboarding screen
->>>>>>> nathan
                         runOnUiThread(() -> {
                             Toast.makeText(SignupActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignupActivity.this, OnboardingActivity.class);
                             startActivity(intent);
-<<<<<<< HEAD
                             finish();
-=======
-                            finish(); // Close current activity
->>>>>>> nathan
                         });
                     }).start();
                 }
             }
         });
 
-<<<<<<< HEAD
 
 
 
-=======
-        // Set click listener for "Already have an account?" text
->>>>>>> nathan
         TextView signInText = findViewById(R.id.signUpText);
         signInText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
                 startActivity(new Intent(SignupActivity.this, LoginActivity.class));
             }
         });
@@ -238,16 +144,3 @@ public class SignupActivity extends AppCompatActivity { // (Android Knowledge, 2
     }
 
 }
-=======
-                startActivity(new Intent(SignupActivity.this, LoginActivity.class)); // Navigate to login screen
-            }
-        });
-    } // (Android Knowledge, 2024)
-}
-
-//Reference List:
-// Android Developers. 2025. Accessing data using Room DAOs. [online]. Available at: https://developer.android.com/training/data-storage/room/accessing-data [Accessed on 15 April 2025]
-//Android Developers. 2025. Fragment lifecycle. [online]. Available at: https://developer.android.com/guide/fragments/lifecycle [Accessed on 12 April 2025]
-//Android Knowledge. 2024. ViewModel in Android Studio using Kotlin | Android Knowledge. [video online]. Available at: https://www.youtube.com/watch?v=v32hSKtlH9A [Accessed on 11 April 2025]
-//Code With Cal. 2025. Room Database Android Studio Kotlin Example Tutorial. [video online]. Available at: https://www.youtube.com/watch?v=-LNg-K7SncM [Accessed on 12 April 2025]
->>>>>>> nathan

@@ -17,11 +17,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.iie.st10320489.marene.R
 
-<<<<<<< HEAD
 class DiscountActivity : Fragment() {
-=======
-class DiscountActivity : Fragment() { // (Code With Cal, 2025)
->>>>>>> nathan
 
     private lateinit var chipGroup: ChipGroup
     private lateinit var recyclerViewClothing: RecyclerView
@@ -33,11 +29,7 @@ class DiscountActivity : Fragment() { // (Code With Cal, 2025)
         // Inflate the layout for this fragment
         val rootView: View = inflater.inflate(R.layout.activity_discount, container, false)
 
-<<<<<<< HEAD
 
-=======
-// (Code With Cal, 2025)
->>>>>>> nathan
         // Initialize RecyclerViews
         recyclerViewClothing = rootView.findViewById(R.id.recyclerViewClothing)
         recyclerViewFood = rootView.findViewById(R.id.recyclerViewFood)
@@ -45,22 +37,14 @@ class DiscountActivity : Fragment() { // (Code With Cal, 2025)
         recyclerViewShoes = rootView.findViewById(R.id.recyclerViewShoes)
         chipGroup = rootView.findViewById(R.id.chipGroup)
 
-<<<<<<< HEAD
 
-=======
-// (Code With Cal, 2025)
->>>>>>> nathan
         // Set LayoutManagers
         recyclerViewClothing.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewFood.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewAccessories.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewShoes.layoutManager = LinearLayoutManager(requireContext())
 
-<<<<<<< HEAD
         // Setup data
-=======
-        // Setup hard coded data
->>>>>>> nathan
         val clothingDiscounts = listOf(
             Discount("H&M Clothing", "20% off all jeans", R.drawable.zara),
             Discount("Factorie", "Buy 2 shirts for the price of 1 shirt", R.drawable.factorie),
@@ -86,11 +70,7 @@ class DiscountActivity : Fragment() { // (Code With Cal, 2025)
             ),
             Discount("Sneakers", "20% off on all sneakers in Sandton Mall", R.drawable.allsneaks)
         )
-<<<<<<< HEAD
 
-=======
-// (Code With Cal, 2025)
->>>>>>> nathan
 
         // Setup adapters
         recyclerViewClothing.adapter = DiscountAdapter(clothingDiscounts)
@@ -104,22 +84,14 @@ class DiscountActivity : Fragment() { // (Code With Cal, 2025)
         rootView.findViewById<Chip>(R.id.chipCloths).setOnClickListener { showOnly("clothing") }
         rootView.findViewById<Chip>(R.id.chipFood).setOnClickListener { showOnly("food") }
         rootView.findViewById<Chip>(R.id.chipAccess).setOnClickListener { showOnly("accessories") }
-<<<<<<< HEAD
         rootView.findViewById<Chip>(R.id.chipShoes).setOnClickListener { showOnly("shoes") }
-=======
-        rootView.findViewById<Chip>(R.id.chipShoes).setOnClickListener { showOnly("shoes") } // (Code With Cal, 2025)
->>>>>>> nathan
 
 
         val backm2 = rootView.findViewById<ImageView>(R.id.back2)
         backm2.setOnClickListener {
             //findNavController().navigate(R.id.navigation_rewards_two)
         }
-<<<<<<< HEAD
 
-=======
-        // (Code With Cal, 2025)
->>>>>>> nathan
 
 
         ViewCompat.setOnApplyWindowInsetsListener(rootView.findViewById(R.id.disc)) { v, insets ->
@@ -141,20 +113,4 @@ class DiscountActivity : Fragment() { // (Code With Cal, 2025)
         recyclerViewShoes.visibility =
             if (category == "shoes" || category == "all") View.VISIBLE else View.GONE
     }
-<<<<<<< HEAD
 }
-=======
-} // (Code With Cal, 2025)
-
-//Reference List:
-//Angga Risky. 2017. Rewards UI Design to Android XML Tutorial. [video online]. Available at: https://www.youtube.com/watch?v=fjXMx_iLkTY [Accessed on 10 April 2025]
-//GeeksforGeeks. 2025. Android UI Layouts. [online]. Available at: https://www.geeksforgeeks.org/android-ui-layouts/ [Accessed on 10 April 2025]
-//Muhammadumarch. 2023. Implementing Navigation in Your Android App with Android Navigation Component. [online]. Available at: https://medium.com/@muhammadumarch321/implementing-navigation-in-your-android-app-with-android-navigation-component-ff22a3d300a [Accessed on 11 April 2025]
-//Android Developers. 2025. Fragment lifecycle. [online]. Available at: https://developer.android.com/guide/fragments/lifecycle [Accessed on 12 April 2025]
-//Android Knowledge. 2022. RecyclerView in Android Studio using Kotlin | Source Code | 2024. [online]. Available at: https://www.youtube.com/watch?v=IYhmpUmeGOQ [Accessed on 12 April 2025]
-//Android Developers. 2025. Add an Image composition. [online]. Available at: https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images#2 [Accessed on 9 April 2025]
-//StackOverflow. 2021. Trying to create a simple recyclerView in Kotlin, but the adapter is not applying properly. [online]. Available at: https://stackoverflow.com/questions/43012903/trying-to-create-a-simple-recyclerview-in-kotlin-but-the-adapter-is-not-applyin [Accessed on 10 April 2025]
-//Android Knowledge. 2024. ViewModel in Android Studio using Kotlin | Android Knowledge. [video online]. Available at: https://www.youtube.com/watch?v=v32hSKtlH9A [Accessed on 11 April 2025]
-//Code With Cal. 2025. Room Database Android Studio Kotlin Example Tutorial. [video online]. Available at: https://www.youtube.com/watch?v=-LNg-K7SncM [Accessed on 12 April 2025]
-//Android Developers. 2025. Accessing data using Room DAOs. [online]. Available at: https://developer.android.com/training/data-storage/room/accessing-data [Accessed on 15 April 2025]
->>>>>>> nathan

@@ -15,7 +15,6 @@ import androidx.room.ForeignKey
 )
 data class UserSettings(
     @PrimaryKey(autoGenerate = true) val userSettingsId: Int = 0,
-<<<<<<< HEAD
     val userId: Int,
     val payday: String,
     val salary: Double,
@@ -24,19 +23,3 @@ data class UserSettings(
     var color: String,
     var chinchilla: String
 )
-=======
-    val userId: Int, // Foreign key referencing the User entity
-    val payday: String, // String representing the user's payday
-    val salary: Double, // User's salary
-    val minGoal: Double, // User's minimum savings goal
-    val maxGoal: Double, // User's maximum savings goal
-    var color: String, // A color preference (could be used for UI customization)
-    var chinchilla: String // An arbitrary string field, possibly a user preference or setting
-) // (Android Knowledge, 2024)
-
-//Reference List:
-// Android Developers. 2025. Accessing data using Room DAOs. [online]. Available at: https://developer.android.com/training/data-storage/room/accessing-data [Accessed on 15 April 2025]
-//Android Developers. 2025. Fragment lifecycle. [online]. Available at: https://developer.android.com/guide/fragments/lifecycle [Accessed on 12 April 2025]
-//Android Knowledge. 2024. ViewModel in Android Studio using Kotlin | Android Knowledge. [video online]. Available at: https://www.youtube.com/watch?v=v32hSKtlH9A [Accessed on 11 April 2025]
-//Code With Cal. 2025. Room Database Android Studio Kotlin Example Tutorial. [video online]. Available at: https://www.youtube.com/watch?v=-LNg-K7SncM [Accessed on 12 April 2025]
->>>>>>> nathan
