@@ -5,73 +5,67 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import android.util.Log
+import android.view.*
+import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.material.tabs.TabLayout
 import com.iie.st10320489.marene.R
 import com.iie.st10320489.marene.data.database.AppDatabase
 import com.iie.st10320489.marene.data.database.DatabaseInstance
+import com.iie.st10320489.marene.graphs.MonthlySummaryFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import android.util.Log
-import android.view.Gravity
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import com.iie.st10320489.marene.graphs.MonthlySummaryFragment
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
-class AnalysisFragment : Fragment() {
-
-    private val TAG = "AnalysisFragment"  // for log tagging
+//Fragment Page
+class AnalysisFragment : Fragment() {//(Coder, 2022), (Coder, 2024)
 
 
+    private val TAG = "AnalysisFragment"
     private lateinit var pieChart: PieChart
     private lateinit var barChart: BarChart
     private lateinit var tabLayout: TabLayout
-    private val viewModel: AnalysisViewModel by viewModels()
-
-    // Add database instance and DAOs
     private lateinit var db: AppDatabase
+    private val viewModel: AnalysisViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_analysis, container, false)
-    }
+    ): View = inflater.inflate(R.layout.fragment_analysis, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Initialize views
         pieChart = view.findViewById(R.id.pieChart)
         barChart = view.findViewById(R.id.barChart)
         tabLayout = view.findViewById(R.id.tabLayout)
 
+        // Get database instance
         db = DatabaseInstance.getDatabase(requireContext())
         Log.d(TAG, "Database initialized")
 
+        // Load charts and fragments
         setupPieChart()
         setupTabs()
         addMonthlySummaryFragment()
     }
 
+    // Sets up the pie chart using category-wise expenses
     private fun setupPieChart() {
         val sharedPreferences = requireContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val email = sharedPreferences.getString("currentUserEmail", null)
-        Log.d(TAG, "Retrieved email from SharedPreferences: $email")
 
         if (email == null) {
             Toast.makeText(context, "No user logged in", Toast.LENGTH_SHORT).show()
@@ -81,9 +75,7 @@ class AnalysisFragment : Fragment() {
 
         lifecycleScope.launch {
             val userId = withContext(Dispatchers.IO) {
-                db.userDao().getUserIdByEmail(email).also {
-                    Log.d(TAG, "User ID fetched for $email: $it")
-                }
+                db.userDao().getUserIdByEmail(email)
             }
 
             if (userId == null) {
@@ -91,71 +83,62 @@ class AnalysisFragment : Fragment() {
                 return@launch
             }
 
+            // Retrieve transactions with their category
             val transactionsWithCategory = withContext(Dispatchers.IO) {
-                db.transactionDao().getTransactionsWithCategory(userId).also {
-                    Log.d(TAG, "Fetched ${it.size} transactions for userId: $userId")
-                }
+                db.transactionDao().getTransactionsWithCategory(userId)
             }
 
             if (transactionsWithCategory.isEmpty()) {
                 Toast.makeText(context, "No expense data", Toast.LENGTH_SHORT).show()
-                Log.w(TAG, "No transactions with category found")
                 return@launch
             }
 
             val totalExpenses = transactionsWithCategory.sumOf { it.transaction.amount }
-            Log.d(TAG, "Total expenses: $totalExpenses")
 
+            // Group by category and sum
             val categorySums = transactionsWithCategory.groupBy { it.category }
                 .mapValues { entry -> entry.value.sumOf { it.transaction.amount } }
 
-            categorySums.forEach { (category, amount) ->
-                Log.d(TAG, "Category: ${category.name}, Amount: $amount")
-            }
-
+            // Convert to PieEntries with percentage
             val entries = categorySums.map { (category, amount) ->
                 val percentage = (amount / totalExpenses * 100).toFloat()
-                Log.d(TAG, "PieEntry -> Category: ${category.name}, Percentage: $percentage")
                 PieEntry(percentage, category.name)
             }
 
-            val context = requireContext() // Get the context
-
+            // Assign category colors
             val colors = categorySums.keys.map {
                 try {
-                    // Assuming category.colour is a color resource ID, we use ContextCompat to get the actual color
-                    ContextCompat.getColor(context, it.colour) // Retrieve the color from resource ID
+                    ContextCompat.getColor(requireContext(), it.colour)
                 } catch (e: Resources.NotFoundException) {
-                    Log.w(TAG, "Color resource not found for ID '${it.colour}', using default")
-                    Color.GRAY // Fallback to a default color
+                    Color.GRAY
                 }
             }
 
-
             val dataSet = PieDataSet(entries, "").apply {
                 this.colors = colors
-                valueTextColor = Color.TRANSPARENT
+                valueTextColor = Color.TRANSPARENT // Hide label values
             }
 
+            // Set up pie chart with formatted center text
             val data = PieData(dataSet)
-
             pieChart.data = data
             pieChart.description.isEnabled = false
             pieChart.legend.isEnabled = false
             pieChart.setDrawEntryLabels(false)
             pieChart.setHoleColor(Color.WHITE)
-            pieChart.setDrawCenterText(false)
+            pieChart.setDrawCenterText(true)
+            pieChart.centerText = "Total Expense\nR %.2f".format(totalExpenses)
+            pieChart.setCenterTextSize(16f)
+            pieChart.setCenterTextTypeface(Typeface.DEFAULT_BOLD)
             pieChart.animateY(1000)
             pieChart.invalidate()
 
+            // Add summary rows under the chart
             val detailsLayout = view?.findViewById<LinearLayout>(R.id.detailsLayout)
-
-// Remove old category rows (everything after header)
             if (detailsLayout != null && detailsLayout.childCount > 1) {
                 detailsLayout.removeViews(1, detailsLayout.childCount - 1)
             }
 
-// Add new rows
             categorySums.forEach { (category, amount) ->
                 val percentage = (amount / totalExpenses * 100)
                 val color = try {
@@ -164,16 +147,18 @@ class AnalysisFragment : Fragment() {
                     Color.GRAY
                 }
 
+                // Create a horizontal layout row for each category
                 val row = LinearLayout(requireContext()).apply {
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                     ).apply {
-                        setMargins(0, 0, 0, 8) // optional spacing between rows
+                        setMargins(0, 0, 0, 8)
                     }
                     orientation = LinearLayout.HORIZONTAL
                 }
 
+                // Colored dot and category name
                 val dotAndCategory = TextView(requireContext()).apply {
                     layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
                     text = "● ${category.name}"
@@ -181,6 +166,7 @@ class AnalysisFragment : Fragment() {
                     textSize = 14f
                 }
 
+                // Amount
                 val amountView = TextView(requireContext()).apply {
                     layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
                     text = "R %.2f".format(amount)
@@ -188,6 +174,7 @@ class AnalysisFragment : Fragment() {
                     textSize = 14f
                 }
 
+                // Percentage
                 val percentView = TextView(requireContext()).apply {
                     layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
                     text = "%.1f%%".format(percentage)
@@ -203,24 +190,19 @@ class AnalysisFragment : Fragment() {
 
                 detailsLayout?.addView(row)
             }
-
-
-            Log.d(TAG, "Pie chart updated successfully")
         }
     }
 
+    // Adds tabs and logic for Weekly, Monthly, and Yearly view modes
     private fun setupTabs() {
         tabLayout.addTab(tabLayout.newTab().setText("Weekly"))
         tabLayout.addTab(tabLayout.newTab().setText("Monthly"), true)
         tabLayout.addTab(tabLayout.newTab().setText("Yearly"))
 
-        Log.d(TAG, "Tabs initialized")
-
-        setChartData("Monthly")
+        setChartData("Monthly") // default
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                Log.d(TAG, "Tab selected: ${tab.text}")
                 setChartData(tab.text.toString())
             }
 
@@ -229,20 +211,16 @@ class AnalysisFragment : Fragment() {
         })
     }
 
+    // Embeds the MonthlySummaryFragment into the UI
     private fun addMonthlySummaryFragment() {
-        // Check if the fragment already exists
-        val fragmentManager = childFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-
-        // Create an instance of MonthlySummaryFragment
         val fragment = MonthlySummaryFragment()
-
-        // Add or replace the fragment in the container
-        fragmentTransaction.replace(R.id.fragment_container, fragment)
-        fragmentTransaction.addToBackStack(null)  // Optionally add the transaction to the back stack
-        fragmentTransaction.commit()
+        childFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
+    // Sets up and updates the bar chart data based on selected time filter
     private fun setChartData(mode: String) {
         val sharedPreferences = requireContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val email = sharedPreferences.getString("currentUserEmail", null) ?: return
@@ -253,31 +231,36 @@ class AnalysisFragment : Fragment() {
             } ?: return@launch
 
             val transactions = withContext(Dispatchers.IO) {
-                db.transactionDao().getTransactionsByUser(userId) // You'll need to create this DAO method
+                db.transactionDao().getTransactionsByUser(userId)
             }
+
+            // Sum income and expenses
+            val incomeTotal = transactions.filter { !it.transaction.expense }.sumOf { it.transaction.amount }
+            val expenseTotal = transactions.filter { it.transaction.expense }.sumOf { it.transaction.amount }
+
+            view?.findViewById<TextView>(R.id.incomeAmountTextView)?.text = "R %.2f".format(incomeTotal)
+            view?.findViewById<TextView>(R.id.expenseAmountTextView)?.text = "R %.2f".format(expenseTotal)
 
             val incomeEntries = ArrayList<BarEntry>()
             val expenseEntries = ArrayList<BarEntry>()
             val labels = ArrayList<String>()
-
-            val now = java.time.LocalDate.now()
+            val now = LocalDate.now()
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-            //val txDate = LocalDateTime.parse(it.transaction.dateTime, formatter).toLocalDate()
 
-
+            // Handle each mode (weekly, monthly, yearly) separately
             when (mode) {
                 "Weekly" -> {
                     val weekStart = now.with(java.time.DayOfWeek.MONDAY)
                     for (i in 0..6) {
                         val day = weekStart.plusDays(i.toLong())
                         val dailyTrans = transactions.filter {
-                            java.time.LocalDate.parse(it.transaction.dateTime, formatter) == day
+                            LocalDate.parse(it.transaction.dateTime, formatter) == day
                         }
-                        val income = dailyTrans.filter { it.transaction.expense == false }.sumOf { it.transaction.amount }.toFloat()
-                        val expense = dailyTrans.filter { it.transaction.expense == true }.sumOf { it.transaction.amount }.toFloat()
+                        val income = dailyTrans.filter { !it.transaction.expense }.sumOf { it.transaction.amount }.toFloat()
+                        val expense = dailyTrans.filter { it.transaction.expense }.sumOf { it.transaction.amount }.toFloat()
                         incomeEntries.add(BarEntry(i.toFloat(), income))
                         expenseEntries.add(BarEntry(i.toFloat(), expense))
-                        labels.add(day.dayOfWeek.name.take(3)) // e.g., MON
+                        labels.add(day.dayOfWeek.name.take(3))
                     }
                 }
 
@@ -288,11 +271,11 @@ class AnalysisFragment : Fragment() {
                         val weekStart = monthStart.plusDays(offset.toLong())
                         val weekEnd = weekStart.plusDays(6)
                         val weeklyTrans = transactions.filter {
-                            val txDate = java.time.LocalDate.parse(it.transaction.dateTime, formatter)
+                            val txDate = LocalDate.parse(it.transaction.dateTime, formatter)
                             txDate in weekStart..weekEnd
                         }
-                        val income = weeklyTrans.filter { it.transaction.expense == false }.sumOf { it.transaction.amount }.toFloat()
-                        val expense = weeklyTrans.filter { it.transaction.expense == true }.sumOf { it.transaction.amount }.toFloat()
+                        val income = weeklyTrans.filter { !it.transaction.expense }.sumOf { it.transaction.amount }.toFloat()
+                        val expense = weeklyTrans.filter { it.transaction.expense }.sumOf { it.transaction.amount }.toFloat()
                         incomeEntries.add(BarEntry(i.toFloat(), income))
                         expenseEntries.add(BarEntry(i.toFloat(), expense))
                         labels.add("W${i + 1}")
@@ -302,18 +285,19 @@ class AnalysisFragment : Fragment() {
                 "Yearly" -> {
                     for (i in 1..12) {
                         val monthlyTrans = transactions.filter {
-                            val txDate = java.time.LocalDate.parse(it.transaction.dateTime, formatter)
+                            val txDate = LocalDate.parse(it.transaction.dateTime, formatter)
                             txDate.monthValue == i && txDate.year == now.year
                         }
-                        val income = monthlyTrans.filter { it.transaction.expense == false }.sumOf { it.transaction.amount }.toFloat()
-                        val expense = monthlyTrans.filter { it.transaction.expense == true }.sumOf { it.transaction.amount }.toFloat()
+                        val income = monthlyTrans.filter { !it.transaction.expense }.sumOf { it.transaction.amount }.toFloat()
+                        val expense = monthlyTrans.filter { it.transaction.expense }.sumOf { it.transaction.amount }.toFloat()
                         incomeEntries.add(BarEntry((i - 1).toFloat(), income))
                         expenseEntries.add(BarEntry((i - 1).toFloat(), expense))
-                        labels.add(java.time.Month.of(i).name.take(3)) // e.g., JAN
+                        labels.add(java.time.Month.of(i).name.take(3))
                     }
                 }
             }
 
+            // Prepare bar chart
             val incomeDataSet = BarDataSet(incomeEntries, "Income").apply {
                 color = ContextCompat.getColor(requireContext(), R.color.income)
             }
@@ -324,9 +308,10 @@ class AnalysisFragment : Fragment() {
 
             val barData = BarData(incomeDataSet, expenseDataSet).apply {
                 barWidth = 0.4f
-                groupBars(0f, 0.2f, 0f)
+                groupBars(0f, 0.2f, 0f) // group bars with spacing
             }
 
+            // Configure bar chart view
             barChart.apply {
                 data = barData
                 xAxis.apply {
@@ -335,7 +320,7 @@ class AnalysisFragment : Fragment() {
                     setCenterAxisLabels(true)
                     axisMinimum = 0f
                     axisMaximum = labels.size.toFloat()
-                    position = com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
+                    position = XAxis.XAxisPosition.BOTTOM
                 }
                 axisLeft.axisMinimum = 0f
                 axisRight.isEnabled = false
@@ -345,6 +330,40 @@ class AnalysisFragment : Fragment() {
                 invalidate()
             }
         }
-    }
+    }//((Cal, 2023), (College, 2025),(Coder, 2022), (Coder, 2024))
 
 }
+
+
+//Bibliography
+//AndroidDevelopers, 2024. Save data in a local database using Room. [Online] Available at: hRps://developer.android.com/training/data-storage/room [Accessed 27 April 2025].
+//AndroidDevelopers, 2024. Write asynchronous DAO queries. [Online]
+//Available at: hRps://developer.android.com/training/data-storage/room/async- queries?authuser=2
+//[Accessed 26 April 2025].
+//Raikwar, A., 2024. Ge=ng Started with Room Database in Android. [Online]
+//Available at: hRps://amitraikwar.medium.com/ge[ng-started-with-room-database-in- android-fa1ca23ce21e
+//[Accessed 27 April 2025].
+//Raikwar, A., 2023. Ge=ng Started with Room Database in Android. [Online]
+//Available at: hRps://developer.android.com/develop#core-areas
+//[Accessed 28 April 2025].
+//Cal, C. W., 2023. Room Database Android Studio Kotlin Example Tutorial. [Online] Available at: hRps://youtu.be/-LNg-K7SncM?si=y8cbMdvhhp48Pp9-
+//[Accessed 27 April 2025].
+//College, I. V., 2025. PROG7313 Module-Manual / Module-Outline. Pretoria: Varsity College Pretoria.
+//Viegen, F. v., 2022. A PracKcal introducKon to Android Room-3 : EnKty, Dao and Database objects.. [Online]
+//Available at: hRps://youtu.be/RstQg7f4Edk?si=8RoAGp-OKPpMNVdY
+//[Accessed 28 April 2025].
+
+//androidbyexample, 2024. EnKKes ,Dao and Database -Android By Example. [Online] Available at: hRps://androidbyexample.com/modules/movie-db/STEP-050_Repo.html [Accessed 25 April 2025].
+//AndroidDevelopers, 2023. Layouts in Views. [Online]
+//Available at: hRps://developer.android.com/developer/ui/views/layout/declaring-layout [Accessed 23 April 2025].
+//Kay, R. M., 2022. IntroducKon To Development WithAndroid Studio: XML The Five Minute Language. [Online]
+//Available at: hRps://youtu.be/94tm21PIBMs?si=BpJQ9meXr1_ynL2m
+//[Accessed 15 April 2025].
+//Team, G. D. T., 2024. Add repository and Manual DI. [Online]
+//Available at: hRps://developer.android.com/codelabs/basic-android-kotlin-compose-add- repository#0
+//[Accessed 22 April 2025].
+//Coder, O., 2022. Implament Pie Chart in Android Studio Using Kotlin. [Online] Available at: hRps://youtu.be/TUJHcU0FOkA?si=jk90LRSO1_eyMyIG
+//[Accessed 24 April 2025].
+//Coder, E. O., 2024. hot to create bar chart | MP Android Chart | Android Studio 2024. [Online]
+//Available at: hRps://youtu.be/WdsmQ3Zyn84?si=jz2AtkIRsNEUwNbX
+//[Accessed 23 April 2025].
