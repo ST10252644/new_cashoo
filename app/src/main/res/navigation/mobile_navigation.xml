@@ -6,7 +6,7 @@
     app:startDestination="@+id/navigation_home"
     app:labelVisibilityMode="labeled"
     >
-
+  <!-- //(Cal, 2023), (College, 2025),-->
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.iie.st10320489.marene.ui.home.HomeFragment"
@@ -43,7 +43,7 @@
         tools:layout="@layout/fragment_analysis" />
 
 
-
+  <!-- //(Cal, 2023), (College, 2025),-->
     <fragment
         android:id="@+id/navigation_add"
         android:name="com.iie.st10320489.marene.ui.add.AddFragment"
@@ -88,7 +88,7 @@
             android:id="@+id/action_transactionFragment_to_transactionDetailsFragment"
             app:destination="@id/transactionDetailsFragment" />
     </fragment>
-
+  <!-- //(Cal, 2023), (College, 2025),-->
     <fragment
         android:id="@+id/transactionDetailsFragment"
         android:name="com.iie.st10320489.marene.ui.transaction.TransactionDetailsFragment"
@@ -167,6 +167,7 @@
 
 
 </navigation>
+
     <!-- //(Cal, 2023), (College, 2025),-->
 
     <!--//Bibliography
@@ -201,3 +202,6 @@
            //Coder, E. O., 2024. hot to create bar chart | MP Android Chart | Android Studio 2024. [Online]
            //Available at: hRps://youtu.be/WdsmQ3Zyn84?si=jz2AtkIRsNEUwNbX
            //[Accessed 23 April 2025]. -->
+
+  
+
