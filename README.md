@@ -27,6 +27,7 @@ Overview of the App Flow
 
    
 —---------------------------------------------------------------------------------------------------------------------------------
+
 How to Use the App:
 
 With just a few taps, you can access essential features thanks to the user-friendly and intuitive navigation:
