@@ -1,16 +1,17 @@
 package com.iie.st10320489.marene.ui.rewards
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.iie.st10320489.marene.R
 
-class DiscountAdapter (
-    private val discountList: List<Discount>
+class DiscountAdapter (private val discountList: List<Discount>
 ) : RecyclerView.Adapter<DiscountAdapter.DiscountViewHolder>() {
 
     class DiscountViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -33,10 +34,9 @@ class DiscountAdapter (
 
         // Handle item click events to launch the detail activity
         holder.itemView.setOnClickListener {
-            val context = holder.itemView.context
-            val intent = Intent(context, DiscountDetailActivity::class.java)
-            intent.putExtra("discount_image", discount.disImageResId)
-            context.startActivity(intent)
+            val bundle = Bundle()
+            bundle.putInt("discount_image", discount.disImageResId)
+            holder.itemView.findNavController().navigate(R.id.navigation_rewards_discountdetail, bundle)
 
         }
     }

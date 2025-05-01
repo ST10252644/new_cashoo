@@ -24,33 +24,7 @@
         android:padding="24dp"
         android:layout_marginBottom="17dp">
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="left"
-            android:layout_alignParentStart="true"
-            android:layout_marginRight="150dp"
-            android:src="@drawable/ic_back" />
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="150dp"
-            android:layout_alignParentEnd="true"
-            android:background="@drawable/ic_search"
-            android:gravity="right" />
-
         <TextView
-          android:id="@+id/txtRewards2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Rewards"
-          android:textColor="#0d493a"
-          android:textSize="25sp"
-          android:textStyle="bold" />
-
-      <TextView
           android:id="@+id/txtYouHave2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -70,22 +44,7 @@
     </LinearLayout>
 
 
-      <TextView
-          android:id="@+id/discPage"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Go to Discount Page"
-          android:background="@drawable/box"
-          android:textSize="20dp"
-          android:padding="8dp"
-          android:textStyle="bold"
-          android:layout_marginBottom="40dp"
-          android:textColor="@color/white">
-
-      </TextView>
-
-
-    <!-- Rewards Section -->
+      <!-- Rewards Section -->
     <TextView
         android:id="@+id/txtRew2"
         android:layout_width="wrap_content"
@@ -97,7 +56,8 @@
         android:textStyle="bold" />
 
     <!-- Bronze Tier -->
-    <TextView
+
+      <TextView
         android:id="@+id/tierBron2"
         android:layout_width="200dp"
         android:layout_height="50dp"
@@ -156,7 +116,8 @@
           android:layout_marginVertical="12dp" />
 
     <!-- Gold Tier -->
-    <TextView
+
+      <TextView
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="Gold Tier"
@@ -177,7 +138,21 @@
        android:orientation="horizontal"
        android:layout_marginBottom="16dp"/>
 
-  <LinearLayout
+      <TextView
+          android:id="@+id/discPage"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="40dp"
+          android:background="@drawable/box"
+          android:padding="8dp"
+          android:text="Go to Discount Page"
+          android:textColor="@color/white"
+          android:textSize="20dp"
+          android:textStyle="bold">
+
+      </TextView>
+
+      <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"

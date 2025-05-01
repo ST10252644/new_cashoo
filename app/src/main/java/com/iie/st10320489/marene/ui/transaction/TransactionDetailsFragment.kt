@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.iie.st10320489.marene.R
 import com.iie.st10320489.marene.databinding.FragmentTransactionDetailsBinding
 import com.iie.st10320489.marene.data.database.DatabaseInstance
 import kotlinx.coroutines.launch
@@ -50,12 +51,10 @@ class TransactionDetailsFragment : Fragment() {
                 binding.txtLocation.text = "${t.location ?: "N/A"}"
                 binding.txtDescription.text = "${t.description ?: "N/A"}"
                 binding.txtCategory.text = "${item.category.name}"
-                binding.txtSubCategory.text = "Subcategory: ${item.category?.name ?: "N/A"}"
+                binding.txtSubCategory.text = "${item.category?.name ?: "N/A"}"
+                binding.imgTransactionPhoto.setImageResource(R.drawable.receipt)
 
-                // Load photo
-                Glide.with(this@TransactionDetailsFragment)
-                    .load(t.photo)
-                    .into(binding.imgTransactionPhoto)
+
             }
         }
     }

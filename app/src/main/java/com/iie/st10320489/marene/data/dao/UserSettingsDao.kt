@@ -23,4 +23,6 @@ interface UserSettingsDao {
 
     @Query("DELETE FROM UserSettings")
     fun deleteAllTableName()
+
+
 }

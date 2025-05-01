@@ -27,39 +27,54 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="Kanye Saint"
-          android:textSize="19dp"
-          android:textStyle="bold"
           android:gravity="center"
-          android:layout_marginTop="5dp" />
+          android:layout_marginTop="5dp"
+          android:fontFamily="@font/inter_bold"
+          android:paddingBottom="5.3dp"
+          android:textColor="@color/text_heading"
+          android:textSize="16sp"
+          android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/ClaimRewardPoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10 cashoos pts"
-            android:textColor="#3b7c63"
             android:textStyle="italic"
             android:layout_marginTop="3dp"
-            android:textSize="17sp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:fontFamily="@font/inter_regular"
+            android:letterSpacing="0.01"
+            android:textColor="@color/text"
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/ClaimDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Valid until 05/11/2025"
-            android:textColor="#999999"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/inter_semibold"
+            android:letterSpacing="0.01"
+            android:textColor="@color/text" />
 
         <Button
             android:id="@+id/ClaimButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="@font/inter_semibold"
             android:text="Claim Reward"
-            android:backgroundTint="#76af9e"/>
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16dp"/>
+
+
 
     </LinearLayout>
 

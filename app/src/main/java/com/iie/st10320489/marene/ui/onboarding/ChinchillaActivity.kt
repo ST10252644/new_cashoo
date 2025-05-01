@@ -35,7 +35,7 @@ class ChinchillaActivity : AppCompatActivity(){
             chinchillaImage.setImageResource(R.drawable.beige_nohat)
         }
         findViewById<View>(R.id.violetButton).setOnClickListener {
-            selectedColor = "violet"
+            selectedColor = "voilet"
             chinchillaImage.setImageResource(R.drawable.voilet_nohat)
         }
         findViewById<View>(R.id.brownButton).setOnClickListener {

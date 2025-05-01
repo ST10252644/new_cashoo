@@ -5,74 +5,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.apprewards.FragmentRewards">
+    android:layout_height="match_parent">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
         tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/txtRewards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continue in part 3"
+            android:textColor="@color/text_heading"
+            android:fontFamily="@font/inter_bold"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingTop="24dp"
+            android:textAlignment="center"/>
 
         <!-- Rewards Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#76af99"
+            android:background="@color/secondary"
             android:gravity="center_horizontal"
-            android:padding="24dp"
-            android:layout_marginBottom="16dp">
+            android:padding="24dp">
 
 
 
-            <ImageView
+<!--            <ImageView
                 android:id="@+id/helpButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="150dp"
                 android:background="@drawable/help"
-                android:gravity="left"/>
-
-
-            <TextView
-                android:id="@+id/textRewards"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rewards"
-                android:textStyle="bold"
-                android:textSize="25sp"
-                android:textColor="#0d493a" />
+                android:gravity="left"/>-->
 
             <TextView
                 android:id="@+id/txtYouHave2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="You have"
-                android:textSize="15sp"
-                android:layout_marginTop="8dp"
-                android:textColor="#0d493a" />
+                android:textColor="@color/text_heading"
+                android:fontFamily="@font/inter_bold"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingTop="24dp" />
 
             <TextView
                 android:id="@+id/txtPoints2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="C 35"
-                android:textSize="24sp"
+                android:fontFamily="@font/inter_extrabold"
+                android:textColor="@color/text_heading"
+                android:textSize="32sp"
                 android:textStyle="bold"
-                android:textColor="#0d493a" />
+                android:paddingBottom="32dp"/>
 
             <Button
                 android:id="@+id/ItemClaim"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16sp"
-                android:backgroundTint="#29644d"
+                android:background="@drawable/rounded_button"
+                android:fontFamily="@font/inter_semibold"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:text="Claim Cashoo"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
         </LinearLayout>
 
         <!-- Goals and Target -->
@@ -82,17 +88,21 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:layout_marginBottom="16dp"
-            android:background="#e7e3df"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Goals and Target"
+                android:textColor="@color/text_heading"
+                android:fontFamily="@font/inter_bold"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:textSize="20sp"
-                android:textColor="@color/black" />
+                android:paddingBottom="16dp"
+                android:paddingTop="24dp" />
 
             <TextView
                 android:id="@+id/textAddGoal"
@@ -104,7 +114,8 @@
                 android:text="+ Add"
                 android:textStyle="bold"
                 android:textColor="#3b7c63"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="invisible"/>
         </LinearLayout>
 
         <!-- Progress Goals -->
@@ -113,7 +124,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
 
             <FrameLayout
                 android:layout_width="0dp"
@@ -122,29 +135,33 @@
                 android:layout_weight="1"
                 android:background="@drawable/green_box">
 
-                <!-- Replace with actual progress bar or chart -->
+                <!-- Replace with actual progress from min goal -->
                 <TextView
+                    android:id="@+id/minGoalPercentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="63%"
+                    android:fontFamily="@font/inter_extrabold"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="32sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="35dp"
+                    android:fontFamily="@font/inter_bold"
                     android:text="Min Goal"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
 
             </FrameLayout>
 
+            <!-- Replace with actual progress from max goal -->
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -153,23 +170,26 @@
                 android:background="@drawable/green_box">
 
                 <TextView
+                    android:id="@+id/maxGoalPercentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="25%"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white" />
+                    android:fontFamily="@font/inter_extrabold"
+                    android:textColor="@color/white"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="35dp"
                     android:layout_gravity="center"
                     android:text="Max Goal"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/inter_bold"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </FrameLayout>
         </LinearLayout>
 
@@ -178,10 +198,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rewards Preview"
+            android:textColor="@color/text_heading"
+            android:fontFamily="@font/inter_bold"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:textSize="25sp"
-            android:layout_marginBottom="8dp"
-            android:textColor="@color/black"/>
+            android:paddingBottom="16dp"
+            android:paddingTop="24dp"
+            android:layout_marginStart="20dp"/>
 
         <!-- Bronze Tier -->
         <TextView
@@ -194,12 +217,14 @@
             android:padding="13dp"
             android:gravity="center"
             android:layout_marginBottom="20dp"
+            android:fontFamily="@font/inter_bold"
+            android:textSize="16sp"
+            android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="20dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewBronze2"
+            android:id="@+id/recyclerClmBronze"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -210,56 +235,92 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E5E7EB"
-            android:layout_marginVertical="12dp" />
+            android:layout_marginVertical="12dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
 
         <!-- Silver Tier -->
         <TextView
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:text="Silver Tier"
-            android:textStyle="bold"
-            android:textSize="18sp"
             android:padding="13dp"
             android:gravity="center"
             android:background="@drawable/silver"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="20dp"
-            android:textColor="@color/white" />
+            android:fontFamily="@font/inter_bold"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginStart="20dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewSilver"
+            android:id="@+id/recyclerClmSilver"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:nestedScrollingEnabled="false"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E5E7EB"
-            android:layout_marginVertical="12dp" />
+            android:layout_marginVertical="12dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
 
         <!-- Gold Tier -->
         <TextView
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:text="Gold Tier"
-            android:textStyle="bold"
-            android:textSize="18sp"
             android:layout_marginTop="8dp"
             android:padding="13dp"
             android:gravity="center"
             android:layout_marginBottom="20dp"
             android:background="@drawable/gold"
-            android:textColor="@color/white" />
+            android:fontFamily="@font/inter_bold"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginStart="20dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E5E7EB"
+            android:layout_marginVertical="12dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewGold"
+            android:id="@+id/recyclerClmGold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"/>
+
+        <TextView
+            android:id="@+id/discPage"
+            android:layout_marginBottom="40dp"
+            android:padding="8dp"
+            android:text="Go to Discount Page"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="@font/inter_semibold"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16dp">
+
+        </TextView>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

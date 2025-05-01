@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         // Change status bar color
         window.statusBarColor = ContextCompat.getColor(this, R.color.primary)
 
-        // Make it transparent
+        // Make it transparent (Optional)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = android.graphics.Color.TRANSPARENT
@@ -76,28 +76,29 @@ class MainActivity : AppCompatActivity() {
                     topNav.visibility = View.VISIBLE
                     backButton.visibility = View.GONE
                     title.text = "Analysis"
-                    rightButton.visibility = View.VISIBLE
+                    rightButton.visibility = View.GONE
                     rightButton.setImageResource(R.drawable.ic_search)
                 }
                 R.id.navigation_add -> {
                     topNav.visibility = View.VISIBLE
                     backButton.visibility = View.GONE
                     title.text = "Add Entry"
-                    rightButton.visibility = View.VISIBLE
+                    rightButton.visibility = View.GONE
                     rightButton.setImageResource(R.drawable.ic_search)
                 }
                 R.id.navigation_category -> {
                     topNav.visibility = View.VISIBLE
                     backButton.visibility = View.GONE
                     title.text = "Categories"
-                    rightButton.visibility = View.VISIBLE
+                    rightButton.visibility = View.GONE
                     rightButton.setImageResource(R.drawable.ic_search)
                 }
                 R.id.transactionFragment -> {
                     topNav.visibility = View.VISIBLE
                     backButton.visibility = View.VISIBLE // Show back button
                     title.text = arguments?.getString("categoryName") ?: "Transactions"
-                    rightButton.visibility = View.GONE
+                    rightButton.visibility = View.VISIBLE
+                    rightButton.setImageResource(R.drawable.ic_search)
                 }
                 R.id.filterFragment -> {
                     topNav.visibility = View.VISIBLE
@@ -125,8 +126,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.transactionDetailsFragment -> {
                     topNav.visibility = View.VISIBLE
                     backButton.visibility = View.VISIBLE
-                    rightButton.visibility = View.VISIBLE
-                    rightButton.setImageResource(R.drawable.ic_edit) //HERE IS THE EDIT BUTTON
+                    rightButton.visibility = View.GONE
+                    rightButton.setImageResource(R.drawable.ic_edit)
                 }
 
                 else -> {

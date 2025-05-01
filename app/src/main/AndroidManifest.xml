@@ -34,11 +34,6 @@
         <activity android:name=".ui.onboarding.ChinchillaActivity" />
         <activity android:name=".ui.onboarding.ChinchillaHatActivity" />
 
-        <!--SETTINGS-->
-        <activity android:name=".ui.settings.ActivitySettings"></activity>
-        <activity android:name=".ui.settings.ActivityEditProfile" />
-
-
         <!--USERS REGISTER-->
         <activity android:name=".SignupActivity" />
         <activity  android:name=".LoginActivity"
