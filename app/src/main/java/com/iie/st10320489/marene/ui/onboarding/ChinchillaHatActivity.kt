@@ -7,45 +7,36 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import com.google.firebase.firestore.FirebaseFirestore
 import com.iie.st10320489.marene.MainActivity
 import com.iie.st10320489.marene.R
-import com.iie.st10320489.marene.data.database.AppDatabase
-import com.iie.st10320489.marene.data.database.DatabaseInstance
-import com.iie.st10320489.marene.data.repository.UserSettingsRepository
-import com.iie.st10320489.marene.data.repository.UserRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class ChinchillaHatActivity : AppCompatActivity() { // (Code With Cal, 2025)
+class ChinchillaHatActivity : AppCompatActivity() {
+
     private lateinit var chinchillaImage: ImageView
     private var selectedColor: String = ""
     private var selectedHat: String = ""
 
-    private lateinit var db: AppDatabase
-    private lateinit var userRepository: UserRepository
+    private val firestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chinchilla_hat)
 
-        // Initialize database and repository
-        db = DatabaseInstance.getDatabase(this)
-        userRepository = UserRepository(db.userDao())
-
-        // Set up back button to finish the activity
         findViewById<ImageButton>(R.id.backButton).setOnClickListener {
             finish()
         }
 
-        // Initialize chinchilla image view
         chinchillaImage = findViewById(R.id.chinchillaImage)
-        // Get selected color from intent or default to "black"
         selectedColor = intent.getStringExtra("selectedColor") ?: "black"
 
-        // Set up click listeners for hat buttons
         findViewById<View>(R.id.sailorButton).setOnClickListener {
             selectedHat = "sailor"
             chinchillaImage.setImageResource(getDrawableResource(selectedColor, selectedHat))
@@ -61,57 +52,75 @@ class ChinchillaHatActivity : AppCompatActivity() { // (Code With Cal, 2025)
         findViewById<View>(R.id.pirateButton).setOnClickListener {
             selectedHat = "pirate"
             chinchillaImage.setImageResource(getDrawableResource(selectedColor, selectedHat))
-        } // (Code With Cal, 2025)
+        }
 
-        // Set up next button to save data and move to next activity
         findViewById<Button>(R.id.nextButton).setOnClickListener {
-            val chinchillaString = "${selectedColor}_${selectedHat}"
-            saveChinchillaToDatabase(chinchillaString)
-            // TODO: Move to next activity if needed
+            if (selectedHat.isEmpty()) {
+                Toast.makeText(this, "Please select a hat", Toast.LENGTH_SHORT).show()
+            } else {
+                val chinchillaString = "${selectedColor}_${selectedHat}"
+                saveChinchillaToFirestore(chinchillaString)
+            }
         }
     }
 
-    // Helper method to get drawable resource ID based on color and hat
     private fun getDrawableResource(color: String, hat: String): Int {
         return resources.getIdentifier("${color}_${hat}", "drawable", packageName)
     }
 
-    // Save chinchilla selection to the database for the current user
-    private fun saveChinchillaToDatabase(chinchillaString: String) {
+    private fun getCurrentUserEmail(): String {
         val sharedPreferences = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-        val currentUserEmail = sharedPreferences.getString("currentUserEmail", null)
+        return sharedPreferences.getString("currentUserEmail", "") ?: ""
+    }
 
-        if (currentUserEmail != null) {
-            // Launch a coroutine on the IO dispatcher to handle database operations
-            lifecycleScope.launch(Dispatchers.IO) {
-                val userId = userRepository.getUserIdByEmail(currentUserEmail)
+    private fun saveChinchillaToFirestore(chinchillaString: String) {
+        val currentUserEmail = getCurrentUserEmail()
 
-                if (userId != null) {
-                    val userSettings = db.userSettingsDao().getUserSettingsByUserId(userId)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val userSnapshot = firestore.collection("users")
+                    .whereEqualTo("email", currentUserEmail)
+                    .get()
+                    .await()
 
-                    if (userSettings != null) {
-                        // Update user settings with the selected chinchilla color and hat
-                        userSettings.color = selectedColor
-                        userSettings.chinchilla = chinchillaString
-                        db.userSettingsDao().updateUserSettings(userSettings)
+                if (!userSnapshot.isEmpty) {
+                    val userDocId = userSnapshot.documents[0].id
 
-                        // Log update for debugging
-                        println("UserSettings updated: color=${userSettings.color}, chinchilla=${userSettings.chinchilla}")
+                    // Update Firestore user preferences
+                    val updates = hashMapOf(
+                        "color" to selectedColor,
+                        "chinchilla" to chinchillaString
+                    )
 
-                        // Switch to the main thread to update UI and navigate
-                        withContext(Dispatchers.Main) {
-                            val intent = Intent(this@ChinchillaHatActivity, MainActivity::class.java)
-                            intent.putExtra("navigateToHome", true)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(intent)
-                            finish()
-                        }
+                    firestore.collection("users")
+                        .document(userDocId)
+                        .collection("preferences")
+                        .document("userSettings")
+                        .set(updates)
+                        .await()
+
+                    withContext(Dispatchers.Main) {
+                        val intent = Intent(this@ChinchillaHatActivity, MainActivity::class.java)
+                        intent.putExtra("navigateToHome", true)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        finish()
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@ChinchillaHatActivity, "User not found", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } // (Code With Cal, 2025)
+
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@ChinchillaHatActivity, "Failed to save data: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
-    } // (Code With Cal, 2025)
+    }
 }
+
 
 //Reference List:
 //Android Developers. 2025. Add an Image composition. [online]. Available at: https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images#2 [Accessed on 9 April 2025]

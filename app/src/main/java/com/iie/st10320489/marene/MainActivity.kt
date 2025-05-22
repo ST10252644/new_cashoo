@@ -15,6 +15,7 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import android.util.TypedValue
 import android.widget.ProgressBar
+import com.google.firebase.FirebaseApp
 import com.iie.st10320489.marene.ui.subcategory.SubCategoryDialogFragment
 import com.iie.st10320489.marene.ui.subcategory.SubcategoryFragment
 
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {//((Cal, 2023), (College, 2025)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        FirebaseApp.initializeApp(this)
 
 
         //change color to transparent

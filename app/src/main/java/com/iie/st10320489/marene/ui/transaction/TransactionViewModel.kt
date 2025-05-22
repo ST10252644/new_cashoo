@@ -1,24 +1,26 @@
 package com.iie.st10320489.marene.ui.transaction
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+
 import com.iie.st10320489.marene.data.entities.TransactionWithCategory
-import com.iie.st10320489.marene.data.repository.TransactionRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
-class TransactionViewModel(private val repository: TransactionRepository) : ViewModel() { // (Android Developers, 2025)
+class TransactionViewModel : ViewModel() {
 
-    private val _transactions = MutableStateFlow<List<TransactionWithCategory>>(emptyList())
-    val transactions: StateFlow<List<TransactionWithCategory>> = _transactions
+    private val repository = TransactionRepository()
 
-    fun loadTransactions(userId: Int) {
-        viewModelScope.launch {
-            _transactions.value = repository.getTransactionsByUserId(userId)
-        }
-    } // (Android Developers, 2025)
+    private val _transactions = MutableLiveData<List<TransactionWithCategory>>()
+    val transactions: LiveData<List<TransactionWithCategory>> = _transactions
+
+    fun loadTransactions(userId: String) {
+        repository.getTransactionsByUserId(userId,
+            onSuccess = { _transactions.value = it },
+            onFailure = { /* Handle error */ }
+        )
+    }
 }
+
 
 //Reference List:
 // Android Developers. 2025. Accessing data using Room DAOs. [online]. Available at: https://developer.android.com/training/data-storage/room/accessing-data [Accessed on 15 April 2025]

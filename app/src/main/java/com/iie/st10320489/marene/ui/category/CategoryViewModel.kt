@@ -2,30 +2,44 @@ package com.iie.st10320489.marene.ui.category
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
-import com.iie.st10320489.marene.data.database.DatabaseInstance
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.google.firebase.firestore.FirebaseFirestore
 import com.iie.st10320489.marene.data.entities.Category
-import com.iie.st10320489.marene.data.repository.CategoryRepository
-import kotlinx.coroutines.launch
-
 
 class CategoryViewModel(application: Application) : AndroidViewModel(application) {
-    //((Cal, 2023), (College, 2025)
-    // Initialize the repository using the DAO from the Room database
-    private val repository: CategoryRepository =
-        CategoryRepository(DatabaseInstance.getDatabase(application).categoryDao())
 
-    // Lazily load all categories (used when no user filtering is needed)
-    val allCategories by lazy { repository.getAll() }
+    private val firestore = FirebaseFirestore.getInstance()
 
-    // Insert a new category into the database
-    fun insert(category: Category) = viewModelScope.launch {
-        repository.insert(category)
+    private val _categories = MutableLiveData<List<Category>>()
+    val categories: LiveData<List<Category>> = _categories
+
+    // Fetch categories by userId from Firebase
+    fun getCategoriesByUser(userId: Int) {
+        firestore.collection("categories")
+            .whereEqualTo("userId", userId)
+            .get()
+            .addOnSuccessListener { documents ->
+                val categoryList = mutableListOf<Category>()
+                for (doc in documents) {
+                    val category = doc.toObject(Category::class.java)
+                    categoryList.add(category)
+                }
+                _categories.postValue(categoryList)
+            }
+            .addOnFailureListener {
+                _categories.postValue(emptyList())
+            }
     }
 
-    // Fetch categories that belong to a specific user
-    fun getCategoriesByUser(userId: Int) = repository.getCategoriesByUser(userId)
+    // Insert new category
+    fun insert(category: Category) {
+        // Firebase generates unique document IDs
+        firestore.collection("categories")
+            .add(category)
+    }
 }
+
 //((Cal, 2023), (College, 2025)
 
 

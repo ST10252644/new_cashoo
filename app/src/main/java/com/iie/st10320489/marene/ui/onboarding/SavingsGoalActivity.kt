@@ -4,40 +4,36 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 import com.iie.st10320489.marene.R
-import com.iie.st10320489.marene.data.database.DatabaseInstance
-import com.iie.st10320489.marene.data.entities.UserSettings
-import com.iie.st10320489.marene.data.repository.UserRepository
 import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 
 class SavingsGoalActivity : AppCompatActivity() {
 
-    // Declare UI elements for Spinner, SeekBars, and TextViews
     private lateinit var spinner: Spinner
     private lateinit var salarySlider: SeekBar
     private lateinit var minSavingsSlider: SeekBar
     private lateinit var maxSpendingSlider: SeekBar
     private lateinit var salaryValue: TextView
     private lateinit var minSavingsValue: TextView
-    private lateinit var maxSpendingValue: TextView // (Code With Cal, 2025)
+    private lateinit var maxSpendingValue: TextView
 
-    // onCreate method is called when the activity is created
+    private val firestore = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_savings_goal)
 
-        // Set up the back button to finish the activity when clicked
         findViewById<ImageButton>(R.id.backButton).setOnClickListener {
             finish()
         }
 
-
         spinner = findViewById(R.id.paydaySpinner)
         val items = arrayOf("Select your payday", "Weekly", "Bi-weekly", "Monthly")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
-        spinner.adapter = adapter // (Code With Cal, 2025)
+        spinner.adapter = adapter
 
-        // Initialize the SeekBars and TextViews for salary, minimum savings, and maximum spending
         salarySlider = findViewById(R.id.salarySlider)
         minSavingsSlider = findViewById(R.id.minSavingsSlider)
         maxSpendingSlider = findViewById(R.id.maxSpendingSlider)
@@ -46,101 +42,89 @@ class SavingsGoalActivity : AppCompatActivity() {
         minSavingsValue = findViewById(R.id.minSavingsValue)
         maxSpendingValue = findViewById(R.id.maxSpendingValue)
 
-        // Set up listeners for salary slider to update the displayed salary value dynamically
-        salarySlider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                salaryValue.text = "R" + progress.toString() // Display salary with "R" as currency symbol
-            }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        salarySlider.setOnSeekBarChangeListener(simpleSliderListener { value ->
+            salaryValue.text = "R$value"
         })
 
-        // Set up listeners for minimum savings slider to update the displayed minimum savings value dynamically
-        minSavingsSlider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                minSavingsValue.text = "R" + progress.toString() // Display minimum savings with "R" as currency symbol
-            }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        minSavingsSlider.setOnSeekBarChangeListener(simpleSliderListener { value ->
+            minSavingsValue.text = "R$value"
         })
 
-        // Set up listeners for maximum spending slider to update the displayed maximum spending value dynamically
-        maxSpendingSlider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                maxSpendingValue.text = "R" + progress.toString() // Display maximum spending with "R" as currency symbol
-            }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        maxSpendingSlider.setOnSeekBarChangeListener(simpleSliderListener { value ->
+            maxSpendingValue.text = "R$value"
         })
 
-        // Set up the "Next" button to save the user settings when clicked
         findViewById<Button>(R.id.nextButton).setOnClickListener {
-            saveUserSettings() // (Code With Cal, 2025)
+            saveUserSettings()
         }
     }
 
-    // Method to get the current user's email from SharedPreferences
+    private fun simpleSliderListener(update: (Int) -> Unit) = object : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+            update(progress)
+        }
+        override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+        override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+    }
+
     private fun getCurrentUserEmail(): String {
         val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
         return sharedPreferences.getString("currentUserEmail", "") ?: ""
     }
 
-    // Method to save user settings to the database
     private fun saveUserSettings() {
-        // Get the DAO objects for interacting with the database
-        val userDao = DatabaseInstance.getDatabase(application).userDao()
-        val userSettingsDao = DatabaseInstance.getDatabase(application).userSettingsDao()
-        val userRepository = UserRepository(userDao)
-
-        // Get the values from the UI elements (spinner and sliders)
+        val currentUserEmail = getCurrentUserEmail()
         val selectedPayday = spinner.selectedItem.toString()
         val salary = salarySlider.progress.toDouble()
         val minGoal = minSavingsSlider.progress.toDouble()
-        val maxGoal = maxSpendingSlider.progress.toDouble() // (Code With Cal, 2025)
+        val maxGoal = maxSpendingSlider.progress.toDouble()
 
-        // Get the current user's email
-        val currentUserEmail = getCurrentUserEmail()
-
-        // Perform the database operations in a background thread (using Coroutine)
         CoroutineScope(Dispatchers.IO).launch {
-            // Fetch user ID from the database using the current user's email
-            val userId = userRepository.getUserIdByEmail(currentUserEmail)
+            try {
+                val snapshot = firestore.collection("users")
+                    .whereEqualTo("email", currentUserEmail)
+                    .get()
+                    .await()
 
-            // If the user ID is found, save the settings to the database
-            if (userId != null) {
-                val userSettings = UserSettings(
-                    userId = userId,
-                    payday = selectedPayday,
-                    salary = salary,
-                    minGoal = minGoal,
-                    maxGoal = maxGoal,
-                    color = "",
-                    chinchilla = ""
-                ) // (Code With Cal, 2025)
+                if (!snapshot.isEmpty) {
+                    val userDocId = snapshot.documents[0].id
 
-                // Print the created UserSettings object for debugging purposes
-                println("UserSettings created: $userSettings")
+                    val userSettingsData = hashMapOf(
+                        "payday" to selectedPayday,
+                        "salary" to salary,
+                        "minGoal" to minGoal,
+                        "maxGoal" to maxGoal,
+                        "color" to "",       // Placeholder if needed later
+                        "chinchilla" to ""   // Placeholder if needed later
+                    )
 
-                // Insert the new user settings into the database
-                userSettingsDao.insertUserSettings(userSettings)
+                    firestore.collection("users")
+                        .document(userDocId)
+                        .collection("preferences")
+                        .document("userSettings")
+                        .set(userSettingsData)
+                        .await()
 
-                // After the settings are saved, show a success message and move to the next screen
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@SavingsGoalActivity, "Settings saved", Toast.LENGTH_SHORT).show()
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@SavingsGoalActivity, "Settings saved", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@SavingsGoalActivity, ChinchillaActivity::class.java))
+                    }
 
-                    // Navigate to the next activity (ChinchillaActivity)
-                    val intent = Intent(this@SavingsGoalActivity, ChinchillaActivity::class.java)
-                    startActivity(intent)
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@SavingsGoalActivity, "User not found", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            } else {
-                // If user ID is not found, show an error message
+
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@SavingsGoalActivity, "Error: User not found.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SavingsGoalActivity, "Failed to save settings: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
-    } // (Code With Cal, 2025)
+    }
 }
+
 
 //Reference List:
 //Android Developers. 2025. Add an Image composition. [online]. Available at: https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images#2 [Accessed on 9 April 2025]

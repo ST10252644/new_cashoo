@@ -1,21 +1,17 @@
 package com.iie.st10320489.marene.ui.subcategory
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.iie.st10320489.marene.R
-import com.iie.st10320489.marene.data.database.AppDatabase
-import com.iie.st10320489.marene.data.database.DatabaseInstance
 import com.iie.st10320489.marene.data.entities.SubCategory
 import com.iie.st10320489.marene.databinding.FragmentSubcategoryBinding
-import kotlinx.coroutines.launch
 
 class SubcategoryFragment : Fragment() {
 
@@ -23,8 +19,8 @@ class SubcategoryFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: SubcategoryAdapter
-    private lateinit var database: AppDatabase
-    private lateinit var sharedPreferences: SharedPreferences
+    private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,9 +32,6 @@ class SubcategoryFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        database = DatabaseInstance.getDatabase(requireContext())
-        sharedPreferences = requireActivity().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-
         adapter = SubcategoryAdapter(mutableListOf()) { selectedSubcategory ->
             val bundle = Bundle().apply {
                 putString("categoryName", selectedSubcategory.name)
@@ -54,21 +47,20 @@ class SubcategoryFragment : Fragment() {
     }
 
     fun loadSubcategories() {
-        lifecycleScope.launch {
-            sharedPreferences = requireActivity().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
-            val currentUserEmail = sharedPreferences.getString("currentUserEmail", null)
-
-            if (currentUserEmail != null) {
-                val userId = database.userDao().getUserIdByEmail(currentUserEmail)
-
-                if (userId != null) {
-                    val subcategoriesFromDb = database.subCategoryDao().getSubCategoriesForUser(userId)
-                    adapter.updateList(subcategoriesFromDb)
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            firestore.collection("subcategories")
+                .whereEqualTo("userId", currentUser.uid)
+                .get()
+                .addOnSuccessListener { documents ->
+                    val subcategories = documents.mapNotNull { it.toObject(SubCategory::class.java) }
+                    adapter.updateList(subcategories)
                 }
-            }
+                .addOnFailureListener { e ->
+                    // Handle the error
+                }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

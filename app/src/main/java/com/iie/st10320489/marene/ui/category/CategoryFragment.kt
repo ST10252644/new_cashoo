@@ -12,18 +12,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.iie.st10320489.marene.R
 import com.iie.st10320489.marene.databinding.FragmentCategoryBinding
-import com.iie.st10320489.marene.data.database.DatabaseInstance
 import com.iie.st10320489.marene.graphs.MonthlySummaryFragment
 import kotlinx.coroutines.launch
 
 class CategoryFragment : Fragment() {
 
-    private var _binding: FragmentCategoryBinding? = null//((Cal, 2023), (College, 2025)
+    private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: CategoryViewModel
     private lateinit var adapter: CategoryAdapter
-    private var userId: Int = 0
+    private var userId: Int = 0 // Could be changed to String if you prefer Firebase userId
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -33,23 +32,20 @@ class CategoryFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[CategoryViewModel::class.java]
 
-        // Set up RecyclerView with a Grid layout of 3 columns
         binding.recyclerViewCategories.layoutManager = GridLayoutManager(requireContext(), 3)
         adapter = CategoryAdapter(emptyList()) { category ->
 
             val bundle = Bundle().apply {
                 putInt("userId", userId)
-                putString("categoryName", category.name)
+                putString("categoryName", category.categoryName)
             }
 
-            // Navigate to the appropriate screen based on the category selected
-            if (category.name == "Other") {
+            if (category.categoryName == "Other") {
                 findNavController().navigate(R.id.action_categoryFragment_to_subcategoryFragment, bundle)
             } else {
                 findNavController().navigate(R.id.action_categoryFragment_to_filterFragment, bundle)
             }
         }
-
         binding.recyclerViewCategories.adapter = adapter
 
         return root
@@ -62,37 +58,28 @@ class CategoryFragment : Fragment() {
         val currentUserEmail = sharedPref.getString("currentUserEmail", null)
 
         if (currentUserEmail != null) {
-            lifecycleScope.launch {
-                val database = DatabaseInstance.getDatabase(requireContext())
-                userId = database.userDao().getUserIdByEmail(currentUserEmail) ?: 0
-                if (userId != 0) {
-                    loadCategoriesForUser(userId)
+            // Here you might fetch userId from Firebase Authentication or Firestore users collection
+            // For now, let's pretend we have a userId stored in SharedPreferences for demo:
+            userId = sharedPref.getInt("currentUserId", 0) // Or fetch from Firebase
 
-                    // Add the MonthlySummaryFragment below the category grid
-                    addMonthlySummaryFragment()
-                }
+            if (userId != 0) {
+                viewModel.getCategoriesByUser(userId)
             }
+
+            viewModel.categories.observe(viewLifecycleOwner) { categories ->
+                adapter.updateCategories(categories ?: emptyList())
+            }
+
+            addMonthlySummaryFragment()
         }
     }
 
-    private fun loadCategoriesForUser(userId: Int) {
-        // Observe LiveData from ViewModel and update the adapter when data changes
-        viewModel.getCategoriesByUser(userId).observe(viewLifecycleOwner) { categories ->
-            adapter.updateCategories(categories ?: emptyList())
-        }
-    }//((Cal, 2023), (College, 2025)
-
     private fun addMonthlySummaryFragment() {
-        // Check if the fragment already exists
         val fragmentManager = childFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-
-        // Create an instance of MonthlySummaryFragment
         val fragment = MonthlySummaryFragment()
-
-        // Add or replace the fragment in the container
         fragmentTransaction.replace(R.id.fragment_container, fragment)
-        fragmentTransaction.addToBackStack(null)  // Optionally add the transaction to the back stack
+        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 
@@ -100,7 +87,8 @@ class CategoryFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-}//((Cal, 2023), (College, 2025)
+}
+//((Cal, 2023), (College, 2025)
 
 //Bibliography
 //AndroidDevelopers, 2024. Save data in a local database using Room. [Online] Available at: hRps://developer.android.com/training/data-storage/room [Accessed 27 April 2025].

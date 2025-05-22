@@ -15,8 +15,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.iie.st10320489.marene.R
-import com.iie.st10320489.marene.data.database.AppDatabase
-import com.iie.st10320489.marene.data.database.DatabaseInstance
 import com.iie.st10320489.marene.databinding.FragmentRewardsBinding
 import com.iie.st10320489.marene.ui.rewards.RewardsViewModel
 import kotlinx.coroutines.Dispatchers

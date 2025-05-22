@@ -6,35 +6,27 @@ import android.util.Log
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import com.iie.st10320489.marene.R
-import com.iie.st10320489.marene.data.database.AppDatabase
-import com.iie.st10320489.marene.data.database.DatabaseInstance
-import com.iie.st10320489.marene.data.repository.UserRepository
 import com.iie.st10320489.marene.databinding.ActivityBudgetSelectionBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class BudgetSelectionActivity : AppCompatActivity() { // (Code With Cal, 2025)
+class BudgetSelectionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBudgetSelectionBinding
-    private val selectedCategories = mutableListOf<String>()   // List to hold user-selected categories
-    private val categories = listOf(  // Predefined list of budget categories
+    private val selectedCategories = mutableListOf<String>()
+    private val categories = listOf(
         "House", "Food", "Transport", "Health", "Loans",
         "Entertainment", "Family", "Savings", "Salary"
     )
 
-    // ViewModel instance with factory to provide DAO from database
-    private val onboardingViewModel: OnboardingViewModel by viewModels {
-        OnboardingViewModelFactory(
-            categoryDao = DatabaseInstance.getDatabase(application).categoryDao()
-        )
-    } // (Code With Cal, 2025)
+    private val firestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +37,6 @@ class BudgetSelectionActivity : AppCompatActivity() { // (Code With Cal, 2025)
         setupButtons()
     }
 
-    // Dynamically create category views and handle selection logic
     private fun setupCategoryViews() {
         categories.forEach { category ->
             val categoryView = TextView(this).apply {
@@ -74,7 +65,7 @@ class BudgetSelectionActivity : AppCompatActivity() { // (Code With Cal, 2025)
             }
             binding.categoriesContainer.addView(categoryView)
         }
-    } // (Code With Cal, 2025)
+    }
 
     private fun setupButtons() {
         binding.backButton.setOnClickListener {
@@ -83,54 +74,66 @@ class BudgetSelectionActivity : AppCompatActivity() { // (Code With Cal, 2025)
 
         binding.nextButton.setOnClickListener {
             if (selectedCategories.isNotEmpty()) {
-
                 saveUserSelectedCategories()
             } else {
                 Toast.makeText(this, "Please select at least one category", Toast.LENGTH_SHORT).show()
             }
         }
-    } // (Code With Cal, 2025)
-
+    }
 
     private fun getCurrentUserEmail(): String {
         val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
-        val email = sharedPreferences.getString("currentUserEmail", "")
+        val email = sharedPreferences.getString("currentUserEmail", "") ?: ""
         Log.d("BudgetSelectionActivity", "Retrieved email: $email")
-        return email ?: ""
+        return email
     }
 
-
-
     private fun saveUserSelectedCategories() {
-
-
-        val userDao = DatabaseInstance.getDatabase(application).userDao()  // Correct usage
-        val userRepository = UserRepository(userDao)
-        // Fetch the current user email (assuming you have it saved in SharedPreferences)
         val currentUserEmail = getCurrentUserEmail()
 
-        // Launch a coroutine to fetch the userId asynchronously
         CoroutineScope(Dispatchers.IO).launch {
-            val userId = userRepository.getUserIdByEmail(currentUserEmail)  // Suspend function call
+            try {
+                // Query the user document by email
+                val userSnapshot = firestore.collection("users")
+                    .whereEqualTo("email", currentUserEmail)
+                    .get()
+                    .await()
 
-            // After getting the userId, save selected categories
-            if (userId == null) {
-                // Handle the case where the user is not found
-                println("User not found for email: $currentUserEmail")
-            } else {
-                // Proceed with saving the categories
-                onboardingViewModel.saveSelectedCategories(userId, selectedCategories)
-            }
+                if (!userSnapshot.isEmpty) {
+                    val userDoc = userSnapshot.documents[0]
+                    val userId = userDoc.id
 
-            // Once the data is saved, navigate to the next screen (ensure this is done on the main thread)
-            withContext(Dispatchers.Main) {
-                val intent = Intent(this@BudgetSelectionActivity, SavingsGoalActivity::class.java)
-                startActivity(intent)
+                    // Save selected categories to Firestore under the user document
+                    val categoryData = hashMapOf("selectedCategories" to selectedCategories)
+                    firestore.collection("users")
+                        .document(userId)
+                        .collection("preferences")
+                        .document("budgetCategories")
+                        .set(categoryData)
+                        .await()
+
+                    withContext(Dispatchers.Main) {
+                        val intent = Intent(this@BudgetSelectionActivity, SavingsGoalActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                } else {
+                    Log.e("Firestore", "User not found")
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@BudgetSelectionActivity, "User not found", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            } catch (e: Exception) {
+                Log.e("FirestoreError", "Failed to save categories: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@BudgetSelectionActivity, "Failed to save categories", Toast.LENGTH_SHORT).show()
+                }
             }
         }
-    } // (Code With Cal, 2025)
-
+    }
 }
+
 
 //Reference List:
 //Android Developers. 2025. Add an Image composition. [online]. Available at: https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images#2 [Accessed on 9 April 2025]

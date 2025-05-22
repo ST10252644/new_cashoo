@@ -45,7 +45,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -54,30 +53,30 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.database.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-
-    //RoomDB
-    //implementation("androidx.room:room-runtime:2.6.1")
-   // kapt("androidx.room:room-compiler:2.6.1")
-    //implementation("androidx.room:room-ktx:2.6.1")
-
+    // Room Database dependencies (commented out)
+    // implementation("androidx.room:room-runtime:2.6.1")
+    // kapt("androidx.room:room-compiler:2.6.1")
+    // implementation("androidx.room:room-ktx:2.6.1")
 
     // MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("com.google.android.material:material:1.9.0")
 
-    //Glide
-    implementation("com.github.bumptech.glide:glide:4.13.0") // or latest version
-    annotationProcessor("com.github.bumptech.glide:compiler:4.13.0") // if using annotation processor
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.13.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
 
-    //Firebase
+    // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.google.firebase:firebase-analytics")
-
 }

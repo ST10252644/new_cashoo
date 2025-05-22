@@ -3,53 +3,63 @@ package com.iie.st10320489.marene.ui.onboarding
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.FirebaseFirestore
 import com.iie.st10320489.marene.R
-import com.iie.st10320489.marene.data.dao.CategoryDao
-import com.iie.st10320489.marene.data.entities.Category
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.iie.st10320489.marene.ui.onboarding.BudgetSelectionActivity
 
-class OnboardingViewModel(
-    private val categoryDao: CategoryDao
-) : ViewModel() {
+class OnboardingViewModel : ViewModel() {
 
-    // Save selected Categories
-    fun saveSelectedCategories(userId: Int, selectedCategoryNames: List<String>) {
-        println("Saving categories for userId: $userId")
-        selectedCategoryNames.forEach { category ->
-            Log.d("OnboardingViewModel", "Saving category: $category")
-        } // (Code With Cal, 2025)
+    private val firestore = FirebaseFirestore.getInstance()
 
-        viewModelScope.launch { // (Code With Cal, 2025)
-            val categories = selectedCategoryNames.map { categoryName ->
-                val (iconRes, colorRes) = mapCategoryResources(categoryName)  // Fetch resource IDs
-                Category(
-                    userId = userId,
-                    name = categoryName,
-                    icon = iconRes,  // Store the resource ID for the icon
-                    colour = colorRes  // Store the resource ID for the color
+    // Save selected categories to Firestore
+    fun saveSelectedCategories(userId: String, selectedCategoryNames: List<String>) {
+        println("Saving categories for Firestore userId: $userId")
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val categoryDocs = selectedCategoryNames.map { name ->
+                val (iconRes, colorRes) = mapCategoryResources(name)
+                hashMapOf(
+                    "name" to name,
+                    "icon" to iconRes,
+                    "colour" to colorRes
                 )
             }.toMutableList()
 
             if (!selectedCategoryNames.contains("Other")) {
-                categories.add(
-                    Category(
-                        userId = userId,
-                        name = "Other",
-                        icon = R.drawable.ic_custom,  // Default icon resource ID
-                        colour = R.color.red  // Default color resource ID
+                categoryDocs.add(
+                    hashMapOf(
+                        "name" to "Other",
+                        "icon" to R.drawable.ic_custom,
+                        "colour" to R.color.red
                     )
                 )
             }
 
-            categoryDao.insertCategories(categories)
-            categories.forEach { category ->
-                println("Saved category: ${category.name}")
+            try {
+                val batch = firestore.batch()
+                val collectionRef = firestore.collection("users")
+                    .document(userId)
+                    .collection("categories")
+
+                categoryDocs.forEach { category ->
+                    val docRef = collectionRef.document()
+                    batch.set(docRef, category)
+                    Log.d("OnboardingViewModel", "Prepared category: ${category["name"]}")
+                }
+
+                batch.commit().addOnSuccessListener {
+                    Log.d("OnboardingViewModel", "Categories saved successfully to Firestore")
+                }.addOnFailureListener { e ->
+                    Log.e("OnboardingViewModel", "Error saving categories: ${e.message}")
+                }
+
+            } catch (e: Exception) {
+                Log.e("OnboardingViewModel", "Exception: ${e.message}")
             }
         }
     }
 
-    // Moved here from BudgetSelectionActivity
     private fun mapCategoryResources(name: String): Pair<Int, Int> {
         return when (name) {
             "House" -> Pair(R.drawable.ic_house, R.color.rose)
@@ -64,7 +74,6 @@ class OnboardingViewModel(
             "Salary" -> Pair(R.drawable.ic_salary, R.color.primary)
             else -> Pair(R.drawable.ic_default, R.color.black)
         }
-        // (Code With Cal, 2025)
     }
 }
 

@@ -1,21 +1,17 @@
 package com.iie.st10320489.marene.ui.transaction
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.iie.st10320489.marene.data.database.DatabaseInstance
-import com.iie.st10320489.marene.data.repository.TransactionRepository
 
-class TransactionViewModelFactory(private val context: Context) : ViewModelProvider.Factory { // (Android Developers, 2025)
+class TransactionViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TransactionViewModel::class.java)) {
-            val transactionDao = DatabaseInstance.getDatabase(context).transactionDao()
-            val repository = TransactionRepository(transactionDao) // FIXED here
-            return TransactionViewModel(repository) as T
+            return TransactionViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
-    } // (Android Developers, 2025)
+    }
 }
+
 
 //Reference List:
 // Android Developers. 2025. Accessing data using Room DAOs. [online]. Available at: https://developer.android.com/training/data-storage/room/accessing-data [Accessed on 15 April 2025]

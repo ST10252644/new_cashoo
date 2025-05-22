@@ -2,24 +2,17 @@ package com.iie.st10320489.marene.ui.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.iie.st10320489.marene.data.dao.CategoryDao
 
-class OnboardingViewModelFactory(
-    // A CategoryDao instance is required to instantiate the ViewModel. It's passed in the constructor.
-    private val categoryDao: CategoryDao
-) : ViewModelProvider.Factory { // The class implements ViewModelProvider.Factory, which is responsible for creating ViewModels.
+class OnboardingViewModelFactory : ViewModelProvider.Factory {
 
-    // This method is responsible for creating and returning the appropriate ViewModel instance.
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-
         if (modelClass.isAssignableFrom(OnboardingViewModel::class.java)) {
-            // If true, creates and returns a new instance of OnboardingViewModel, passing the categoryDao as a parameter.
-            return OnboardingViewModel(categoryDao) as T
+            return OnboardingViewModel() as T  // No DAO required now
         }
-        // If the modelClass is not of type OnboardingViewModel, throws an exception indicating an unknown ViewModel class.
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-} // (Code With Cal, 2025)
+}
+
 
 //Reference List:
 //Android Developers. 2025. Add an Image composition. [online]. Available at: https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images#2 [Accessed on 9 April 2025]

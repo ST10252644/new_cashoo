@@ -25,6 +25,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "marene"
+rootProject.name = "cashoo"
 include(":app")
  //(Cal, 2023), (College, 2025)

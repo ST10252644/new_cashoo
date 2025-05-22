@@ -10,46 +10,33 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.firestore.FirebaseFirestore
 import com.iie.st10320489.marene.R
-import com.iie.st10320489.marene.data.dao.TransactionDao
-import com.iie.st10320489.marene.data.dao.UserDao
-import com.iie.st10320489.marene.data.database.DatabaseInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class MonthlySummaryFragment : Fragment() {
 
-    // DAO references for transactions and users
-    private lateinit var transactionDao: TransactionDao
-    private lateinit var userDao: UserDao
-
-    // UI components
     private lateinit var totalIncomeText: TextView
     private lateinit var totalExpenseText: TextView
     private lateinit var barGraph: ProgressBar
     private lateinit var percentageText: TextView
+    private val firestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_monthly_summary, container, false)
 
-        // Initialize UI elements
         totalIncomeText = view.findViewById(R.id.value_total_balance)
         totalExpenseText = view.findViewById(R.id.value_total_expense)
         barGraph = view.findViewById(R.id.bar_graph)
         percentageText = view.findViewById(R.id.text_percentage_spent)
 
-        // Initialize DAOs
-        val db = DatabaseInstance.getDatabase(requireContext())
-        transactionDao = db.transactionDao()
-        userDao = db.userDao()
-
-        // Launch coroutine to update the monthly summary
         lifecycleScope.launch {
             updateMonthlySummary()
         }
@@ -57,52 +44,62 @@ class MonthlySummaryFragment : Fragment() {
         return view
     }
 
-    // Suspended function to update the income, expenses, and percentage spent
     private suspend fun updateMonthlySummary() {
-        Log.d("MonthlySummaryFragment", "Starting updateMonthlySummary method.")
-
-        // Get the current user's email from shared preferences
         val sharedPreferences = requireContext().getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val email = sharedPreferences.getString("currentUserEmail", null)
-        Log.d("MonthlySummaryFragment", "Email retrieved: $email")
+        if (email.isNullOrEmpty()) return
 
-        if (email != null) {
-            // Fetch user ID from email
-            val userId = userDao.getUserIdByEmail(email)
-            Log.d("MonthlySummaryFragment", "User ID: $userId")
+        try {
+            val userSnapshot = firestore.collection("users")
+                .whereEqualTo("email", email)
+                .get()
+                .await()
 
-            if (userId != null) {
-                // Get the current month and year
-                val currentDate = LocalDate.now()
-                val month = currentDate.format(DateTimeFormatter.ofPattern("MM"))
-                val year = currentDate.format(DateTimeFormatter.ofPattern("yyyy"))
-                Log.d("MonthlySummaryFragment", "Current month: $month, Current year: $year")
+            if (userSnapshot.isEmpty) return
+            val userId = userSnapshot.documents[0].id
 
-                // Fetch all income and expenses for this month and year
-                val expenses = transactionDao.getMonthlyExpenses(userId, month, year)
-                val income = transactionDao.getMonthlyIncome(userId, month, year)
-                Log.d("MonthlySummaryFragment", "Expenses: $expenses, Income: $income")
+            val currentDate = LocalDate.now()
+            val currentMonth = currentDate.format(DateTimeFormatter.ofPattern("MM"))
+            val currentYear = currentDate.format(DateTimeFormatter.ofPattern("yyyy"))
 
-                // Calculate total amounts
-                val totalExpense = expenses.sumOf { it.amount }
-                val totalIncome = income.sumOf { it.amount }
-                Log.d("MonthlySummaryFragment", "Total Expense: $totalExpense, Total Income: $totalIncome")
+            val transactions = firestore.collection("users")
+                .document(userId)
+                .collection("transactions")
+                .get()
+                .await()
 
-                // Update UI on main thread
-                withContext(Dispatchers.Main) {
-                    totalIncomeText.text = "R %.2f".format(totalIncome)
-                    totalExpenseText.text = "-R %.2f".format(totalExpense)
+            var totalIncome = 0.0
+            var totalExpense = 0.0
 
-                    val percentageSpent = if (totalIncome == 0.0) 0 else (totalExpense / totalIncome * 100).toInt()
-                    barGraph.progress = 100 - percentageSpent
-                    percentageText.text = "You've spent $percentageSpent% of your income"
+            for (doc in transactions) {
+                val dateStr = doc.getString("dateTime") ?: continue
+                val amount = doc.getDouble("amount") ?: 0.0
+                val isExpense = doc.getBoolean("expense") ?: true
 
-                    Log.d("MonthlySummaryFragment", "Percentage spent: $percentageSpent")
+                val transactionDate = LocalDate.parse(dateStr.substring(0, 10))
+                val month = transactionDate.monthValue.toString().padStart(2, '0')
+                val year = transactionDate.year.toString()
+
+                if (month == currentMonth && year == currentYear) {
+                    if (isExpense) totalExpense += amount else totalIncome += amount
                 }
             }
+
+            val percentageSpent = if (totalIncome == 0.0) 0 else (totalExpense / totalIncome * 100).toInt()
+
+            withContext(Dispatchers.Main) {
+                totalIncomeText.text = "R %.2f".format(totalIncome)
+                totalExpenseText.text = "-R %.2f".format(totalExpense)
+                barGraph.progress = 100 - percentageSpent
+                percentageText.text = "You've spent $percentageSpent% of your income"
+            }
+
+        } catch (e: Exception) {
+            Log.e("MonthlySummaryFragment", "Error updating summary: ${e.message}")
         }
     }
-}//(Cal, 2023), (College, 2025)
+}
+
 
 //Bibliography
 //AndroidDevelopers, 2024. Save data in a local database using Room. [Online] Available at: hRps://developer.android.com/training/data-storage/room [Accessed 27 April 2025].

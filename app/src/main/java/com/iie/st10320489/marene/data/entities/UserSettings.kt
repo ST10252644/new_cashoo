@@ -1,27 +1,14 @@
 package com.iie.st10320489.marene.data.entities
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.ForeignKey
-
-@Entity(
-    tableName = "UserSettings",
-    foreignKeys = [ForeignKey(
-        entity = User::class,
-        parentColumns = ["userId"],
-        childColumns = ["userId"],
-        onDelete = ForeignKey.CASCADE
-    )]
-)
 data class UserSettings(
-    @PrimaryKey(autoGenerate = true) val userSettingsId: Int = 0,
-    val userId: Int, // Foreign key referencing the User entity
-    val payday: String, // String representing the user's payday
-    val salary: Double, // User's salary
-    val minGoal: Double, // User's minimum savings goal
-    val maxGoal: Double, // User's maximum savings goal
-    var color: String, // A color preference (could be used for UI customization)
-    var chinchilla: String // An arbitrary string field, possibly a user preference or setting
+    val userSettingsId: Int = 0, // Unique ID (can still use this locally or set manually)
+    val userId: Int = 0, // Foreign key referencing the User entity
+    val payday: String = "", // String representing the user's payday
+    val salary: Double = 0.0, // User's salary
+    val minGoal: Double = 0.0, // User's minimum savings goal
+    val maxGoal: Double = 0.0, // User's maximum savings goal
+    var color: String = "", // A color preference (could be used for UI customization)
+    var chinchilla: String = "" // An arbitrary string field, possibly a user preference or setting
 ) // (Android Knowledge, 2024)
 
 //Reference List:

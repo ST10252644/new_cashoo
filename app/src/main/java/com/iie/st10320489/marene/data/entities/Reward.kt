@@ -1,20 +1,15 @@
 package com.iie.st10320489.marene.data.entities
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
 // Represents the Reward table which defines available rewards a user can earn or redeem
-@Entity(tableName = "Reward")//(Viegen, 2022), (androidbyexample, 2024)
+// (Viegen, 2022), (androidbyexample, 2024)
 data class Reward(
-    @PrimaryKey(autoGenerate = true) val rewardId: Int = 0, // Auto-generated unique ID for each reward
-    val name: String,
-    val description: String,
-    val amount: Double,
-    val type: String,
-    val code: Int
+    val rewardId: Int = 0, // Auto-generated unique ID for each reward
+    val name: String = "",
+    val description: String = "",
+    val amount: Double = 0.0,
+    val type: String = "",
+    val code: Int = 0
 )////(Cal, 2023), (College, 2025),
-
-
 
 //Bibliography
 //AndroidDevelopers, 2024. Save data in a local database using Room. [Online] Available at: hRps://developer.android.com/training/data-storage/room [Accessed 27 April 2025].

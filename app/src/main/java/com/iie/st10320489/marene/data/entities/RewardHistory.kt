@@ -1,26 +1,13 @@
 package com.iie.st10320489.marene.data.entities
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.ForeignKey
-
 // Represents the RewardHistory table, which logs each reward redemption event by a user
-@Entity(//(Viegen, 2022), (androidbyexample, 2024)
-    tableName = "RewardHistory",
-    foreignKeys = [
-        ForeignKey(entity = User::class, parentColumns = ["userId"], childColumns = ["userId"]),       // Links to the User who redeemed the reward
-        ForeignKey(entity = Reward::class, parentColumns = ["rewardId"], childColumns = ["rewardId"])  // Links to the specific Reward that was redeemed
-    ]
-)
-data class RewardHistory(//(Viegen, 2022), (androidbyexample, 2024)
-    @PrimaryKey(autoGenerate = true) val historyId: Int = 0, // Auto-generated unique ID for each reward history entry
-    val userId: Int,
-    val rewardId: Int,
-    val dateRedeemed: String,
-    val amount: Double
-)//(Cal, 2023), (College, 2025),
-
-
+data class RewardHistory( // (Viegen, 2022), (androidbyexample, 2024)
+    val historyId: Int = 0, // Auto-generated unique ID for each reward history entry
+    val userId: Int = 0,
+    val rewardId: Int = 0,
+    val dateRedeemed: String = "",
+    val amount: Double = 0.0
+) // (Cal, 2023), (College, 2025)
 
 //Bibliography
 //AndroidDevelopers, 2024. Save data in a local database using Room. [Online] Available at: hRps://developer.android.com/training/data-storage/room [Accessed 27 April 2025].

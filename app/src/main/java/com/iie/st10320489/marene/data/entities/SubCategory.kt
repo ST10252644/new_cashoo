@@ -1,14 +1,11 @@
 package com.iie.st10320489.marene.data.entities
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "SubCategory")
 data class SubCategory(
-    @PrimaryKey(autoGenerate = true) val subCategoryId: Int = 0, // Column to store the name of the subcategory
-    val name: String,
-    val userId: Int  // Column to store the ID of the user who owns this subcategory
-) // (Android Knowledge, 2024)
+    val subCategoryId: String = "",
+    val name: String = "",
+    val userId: String = ""
+)
+// (Android Knowledge, 2024)
 
 //Reference List:
 // Android Developers. 2025. Accessing data using Room DAOs. [online]. Available at: https://developer.android.com/training/data-storage/room/accessing-data [Accessed on 15 April 2025]

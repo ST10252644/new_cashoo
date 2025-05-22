@@ -1,26 +1,14 @@
 package com.iie.st10320489.marene.data.entities
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.ForeignKey
-
-// Defines the ActivityLog table with a foreign key relationship to the User table
-@Entity(//(Viegen, 2022), (androidbyexample, 2024)
-    tableName = "ActivityLog",
-    foreignKeys = [ForeignKey(
-        entity = User::class,
-        parentColumns = ["userId"],
-        childColumns = ["userId"]
-    )]
-)
+// Defines the ActivityLog with a reference to userId (no foreign key in Firebase)
+// (Viegen, 2022), (androidbyexample, 2024)
 data class ActivityLog(
-    @PrimaryKey(autoGenerate = true) val logId: Int = 0, // Auto-generated primary key for each log entry
-    val userId: Int,
-    val action: String,
-    val timestamp: String,
-    val details: String?
+    val logId: Int = 0, // Auto-generated primary key for each log entry (you might generate this client-side or use Firebase auto IDs)
+    val userId: Int = 0,
+    val action: String = "",
+    val timestamp: String = "",
+    val details: String? = null
 )////(Cal, 2023), (College, 2025)
-
 
 //Bibliography
 //AndroidDevelopers, 2024. Save data in a local database using Room. [Online] Available at: hRps://developer.android.com/training/data-storage/room [Accessed 27 April 2025].

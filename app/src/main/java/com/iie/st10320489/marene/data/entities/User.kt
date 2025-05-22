@@ -1,29 +1,25 @@
 package com.iie.st10320489.marene.data.entities
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "User")
 data class User(
-    @PrimaryKey(autoGenerate = true) val userId: Int = 0, // (Android Knowledge, 2024)
+    val userId: Int = 0, // Unique ID (can still use this locally or set manually)
 
     // Stores the user's first name
-    val name: String,
+    val name: String = "",
 
     // Stores the user's last name
-    val surname: String,
+    val surname: String = "",
 
     // Stores the user's email address
-    val email: String,
+    val email: String = "",
 
     // Stores the user's password
-    val password: String,
+    val password: String = "",
 
     // Stores the user's cash balance (modifiable)
-    var cashoos: Double,
+    var cashoos: Double = 0.0,
 
     // Indicates whether the user account is active
-    val isActive: Boolean
+    val isActive: Boolean = false
 ) // (Android Knowledge, 2024)
 
 //Reference List:
