@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ChinchillaHatActivity : AppCompatActivity() {
+class ChinchillaHatActivity : AppCompatActivity() { // (Code With Cal, 2025)
     private lateinit var chinchillaImage: ImageView
     private var selectedColor: String = ""
     private var selectedHat: String = ""
@@ -31,16 +31,21 @@ class ChinchillaHatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chinchilla_hat)
 
+        // Initialize database and repository
         db = DatabaseInstance.getDatabase(this)
         userRepository = UserRepository(db.userDao())
 
+        // Set up back button to finish the activity
         findViewById<ImageButton>(R.id.backButton).setOnClickListener {
             finish()
         }
 
+        // Initialize chinchilla image view
         chinchillaImage = findViewById(R.id.chinchillaImage)
+        // Get selected color from intent or default to "black"
         selectedColor = intent.getStringExtra("selectedColor") ?: "black"
 
+        // Set up click listeners for hat buttons
         findViewById<View>(R.id.sailorButton).setOnClickListener {
             selectedHat = "sailor"
             chinchillaImage.setImageResource(getDrawableResource(selectedColor, selectedHat))
@@ -56,8 +61,9 @@ class ChinchillaHatActivity : AppCompatActivity() {
         findViewById<View>(R.id.pirateButton).setOnClickListener {
             selectedHat = "pirate"
             chinchillaImage.setImageResource(getDrawableResource(selectedColor, selectedHat))
-        }
+        } // (Code With Cal, 2025)
 
+        // Set up next button to save data and move to next activity
         findViewById<Button>(R.id.nextButton).setOnClickListener {
             val chinchillaString = "${selectedColor}_${selectedHat}"
             saveChinchillaToDatabase(chinchillaString)
@@ -65,15 +71,18 @@ class ChinchillaHatActivity : AppCompatActivity() {
         }
     }
 
+    // Helper method to get drawable resource ID based on color and hat
     private fun getDrawableResource(color: String, hat: String): Int {
         return resources.getIdentifier("${color}_${hat}", "drawable", packageName)
     }
 
+    // Save chinchilla selection to the database for the current user
     private fun saveChinchillaToDatabase(chinchillaString: String) {
         val sharedPreferences = getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
         val currentUserEmail = sharedPreferences.getString("currentUserEmail", null)
 
         if (currentUserEmail != null) {
+            // Launch a coroutine on the IO dispatcher to handle database operations
             lifecycleScope.launch(Dispatchers.IO) {
                 val userId = userRepository.getUserIdByEmail(currentUserEmail)
 
@@ -81,14 +90,15 @@ class ChinchillaHatActivity : AppCompatActivity() {
                     val userSettings = db.userSettingsDao().getUserSettingsByUserId(userId)
 
                     if (userSettings != null) {
+                        // Update user settings with the selected chinchilla color and hat
                         userSettings.color = selectedColor
                         userSettings.chinchilla = chinchillaString
                         db.userSettingsDao().updateUserSettings(userSettings)
 
-
+                        // Log update for debugging
                         println("UserSettings updated: color=${userSettings.color}, chinchilla=${userSettings.chinchilla}")
 
-
+                        // Switch to the main thread to update UI and navigate
                         withContext(Dispatchers.Main) {
                             val intent = Intent(this@ChinchillaHatActivity, MainActivity::class.java)
                             intent.putExtra("navigateToHome", true)
@@ -96,10 +106,21 @@ class ChinchillaHatActivity : AppCompatActivity() {
                             startActivity(intent)
                             finish()
                         }
-
                     }
                 }
-            }
+            } // (Code With Cal, 2025)
         }
-    }
+    } // (Code With Cal, 2025)
 }
+
+//Reference List:
+//Android Developers. 2025. Add an Image composition. [online]. Available at: https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images#2 [Accessed on 9 April 2025]
+//Code With Cal. 2025. Color Picker Android Studio Kotlin Custom Spinner Tutorial. [video online]. Available at: https://www.youtube.com/watch?v=YsKjl8ZbM4g [Accessed on 9 April 2025]
+//Code With Cal. 2025. Room Database Android Studio Kotlin Example Tutorial. [video online]. Available at: https://www.youtube.com/watch?v=-LNg-K7SncM [Accessed on 12 April 2025]
+//Programming w/ Professor Sluiter. 2023. Learn Kotlin 08 how to use the if conditional statement. [online]. Available at: https://www.youtube.com/watch?v=usFfxlnTPHc [Accessed on 13 April 2025]
+//GeeksforGeeks. 2025. Android UI Layouts. [online]. Available at: https://www.geeksforgeeks.org/android-ui-layouts/ [Accessed on 10 April 2025]
+//Muhammadumarch. 2023. Implementing Navigation in Your Android App with Android Navigation Component. [online]. Available at: https://medium.com/@muhammadumarch321/implementing-navigation-in-your-android-app-with-android-navigation-component-ff22a3d300a [Accessed on 11 April 2025]
+//Android Developers. 2025. Fragment lifecycle. [online]. Available at: https://developer.android.com/guide/fragments/lifecycle [Accessed on 12 April 2025]
+//Android Knowledge. 2024. ViewModel in Android Studio using Kotlin | Android Knowledge. [video online]. Available at: https://www.youtube.com/watch?v=v32hSKtlH9A [Accessed on 11 April 2025]
+//Code With Cal. 2025. Room Database Android Studio Kotlin Example Tutorial. [video online]. Available at: https://www.youtube.com/watch?v=-LNg-K7SncM [Accessed on 12 April 2025]
+//Android Developers. 2025. Accessing data using Room DAOs. [online]. Available at: https://developer.android.com/training/data-storage/room/accessing-data [Accessed on 15 April 2025]

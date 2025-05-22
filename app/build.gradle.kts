@@ -1,7 +1,10 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    id("org.jetbrains.kotlin.kapt")
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.kapt") //  This is the missing one
+    id("com.google.gms.google-services") // if using Firebase
+
+
 }
 
 android {
@@ -59,9 +62,9 @@ dependencies {
 
 
     //RoomDB
-    implementation("androidx.room:room-runtime:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
+    //implementation("androidx.room:room-runtime:2.6.1")
+   // kapt("androidx.room:room-compiler:2.6.1")
+    //implementation("androidx.room:room-ktx:2.6.1")
 
 
     // MPAndroidChart
@@ -73,6 +76,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.13.0") // or latest version
     annotationProcessor("com.github.bumptech.glide:compiler:4.13.0") // if using annotation processor
 
-
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation("com.google.firebase:firebase-analytics")
 
 }
